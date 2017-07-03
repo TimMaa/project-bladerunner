@@ -1,6 +1,23 @@
 canvas{
-  background-color: white;
+  background-color: rgba(255,255,255,0.5);
   position: absolute;
-  top: 0;
-  left: 0;
+  top: calc(50% - (500px / 2));
+  left: calc(50% - (800px / 2));
+  z-index: 900;
 }
+
+#arena{
+  width: 100%;
+  position: absolute;
+  top: -250px;
+}
+
+#homeButton{
+  position: absolute;
+  z-index: 999;
+  top: 0;
+  right: 0;
+  margin: 12px;
+}
+
+

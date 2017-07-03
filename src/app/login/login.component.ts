@@ -8,6 +8,8 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 export class LoginComponent implements OnInit {
 
   title = 'This is the super sick game of life!!!';
+  isDisabled: boolean = true;
+  username: string;
 
   @Output() login: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -16,8 +18,10 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
   }
 
-  logIn() {
-    this.login.emit(true);
+  enableButton() {
+    if (this.username) {
+      this.isDisabled = false;
+    }
   }
 
 }
