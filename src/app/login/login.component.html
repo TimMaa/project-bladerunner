@@ -1,0 +1,21 @@
+<div id="welcomeScreen">
+  <div id="welcomeContent">
+    <h1>
+      {{title}}
+    </h1>
+    <p *ngIf="!username">
+      Here you can login!
+    </p>
+    <p *ngIf="username">
+      Welcome {{username}}!
+    </p>
+    <label>
+      Name:
+      <input [(ngModel)]="username">
+    </label>
+  </div>
+
+  <div id="welcomeActions">
+    <button md-button id="startButton" routerLink="/home">START THE GAME !</button>
+  </div>
+</div>

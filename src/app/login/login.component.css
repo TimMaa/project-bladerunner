@@ -1,0 +1,26 @@
+#welcomeScreen{
+  height: 50%;
+  width: 50%;
+  background-color: rgba(100,100,100,0.6);
+  text-align: center;
+  margin: auto;
+  position: absolute;
+  top: 0; left: 0; bottom: 0; right: 0;
+  display: table;
+  line-height: 3em;
+}
+
+#welcomeContent{
+  display: table-row;
+  text-align: center;
+  color: white;
+}
+
+#welcomeActions{
+  display: table-row;
+}
+
+.startButton{
+  width: 80%;
+  color: #000;
+}
