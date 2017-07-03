@@ -1,10 +1,10 @@
 # Life of Game (or something else that resembles much writes and reads)
 
-Did you ever feel lost in life?
-Did you ever think noone liked you?
-Did you ever need a database that could read and write super fast?
-
-This great project is your answer! 
+Did you ever feel lost in life?  
+Did you ever think noone liked you?  
+Did you ever need a database that could read and write super fast?  
+  
+This great project is your answer!  
 It is the frontend for a **Cassandra Use-Case**, which is supposed to be a game where users collaborate (or fight) in drawing images on a canvas.
 
 
