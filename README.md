@@ -10,14 +10,20 @@ It is the frontend for a **Cassandra Use-Case**, which is supposed to be a game 
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. 
+Run `npm start` for a dev Angular server. Navigate to `http://localhost:4200/`. 
 The app will automatically reload if you change any of the source files.
 It's also great for just showing it temporarily.
+
+Run `npm run start-express` for a dev Express server.
 
 ## Build
 
 Run `ng build` to build the project. 
 The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+
+## Production
+
+Run `ng build && node server` for a production server. Navigate to `http://localhost:3000/`.
 
 ## Running unit tests
 
