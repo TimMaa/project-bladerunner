@@ -27,8 +27,11 @@
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
     "express": "^4.15.3",
+    "htmlspecialchars": "^1.0.5",
     "morgan": "^1.8.2",
+    "rx": "^4.1.0",
     "rxjs": "^5.1.0",
+    "validator": "^7.2.0",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
