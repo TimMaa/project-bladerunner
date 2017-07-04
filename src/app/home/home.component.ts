@@ -32,6 +32,29 @@ export class HomeComponent implements OnInit {
     },
   ];
 
+  friends: Object[] = [
+    {
+      name: 'Ozzy',
+      highscore: 7892,
+    },
+    {
+      name: 'Freddy',
+      highscore: 87123,
+    },
+    {
+      name: 'Axl',
+      highscore: 0,
+    },
+    {
+      name: 'Paul',
+      highscore: 1960,
+    },
+    {
+      name: 'Billie Joe',
+      highscore: 2171857883,
+    }
+    ];
+
   armyColor: string = '#133769';
   username: string = 'DerDreiJuniWallach';
   password: string = '*********';
