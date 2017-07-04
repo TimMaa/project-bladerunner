@@ -3,7 +3,11 @@ canvas{
   position: absolute;
   top: calc(50% - (500px / 2));
   left: calc(50% - (800px / 2));
-  z-index: 900;
+  z-index: 500;
+}
+
+canvas.moveUp{
+  animation: moveUp 0.1s;
 }
 
 #arena{
@@ -14,10 +18,29 @@ canvas{
 
 #homeButton{
   position: absolute;
-  z-index: 999;
+  z-index: 900;
   top: 0;
   right: 0;
   margin: 12px;
 }
 
+#imageDataButton{
+  position: absolute;
+  z-index: 900;
+  top: 0px;
+  left: 0;
+  margin: 12px;
+}
 
+div{
+  z-index: 950;
+}
+
+@keyframes moveUp {
+  0%{
+    top: 0;
+  }
+  100%{
+    top: 50px;
+  }
+}
