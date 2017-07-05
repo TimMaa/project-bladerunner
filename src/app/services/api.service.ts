@@ -9,7 +9,7 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class ApiService {
 
-  baseUrl: string = 'http://localhost:3000/api/';
+  baseUrl: string = 'api/';
 
   constructor(private http: Http) {
   }
