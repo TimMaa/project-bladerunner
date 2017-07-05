@@ -1,9 +1,13 @@
 import { Component, OnInit } from '@angular/core';
+import {ApiService} from '../services/api.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  providers: [
+    ApiService
+  ],
 })
 export class HomeComponent implements OnInit {
 
@@ -59,9 +63,23 @@ export class HomeComponent implements OnInit {
   username: string = 'DerDreiJuniWallach';
   password: string = '*********';
 
-  constructor() { }
+  apiCall: string;
+
+  constructor(private apiService: ApiService) {
+    this.getBaseAPITest();
+  }
 
   ngOnInit() {
   }
 
+  getBaseAPITest() {
+    this.apiService.getBase()
+      .subscribe(
+        data => {
+          this.apiCall = data;
+          console.log(this.apiCall);
+        },
+            error =>  console.log(error)
+      );
+  }
 }
