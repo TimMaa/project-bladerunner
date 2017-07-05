@@ -1,7 +1,7 @@
 /**
  * Created by Basti on 04.07.2017.
  */
-const data = require('./model.js');
+
 const express = require('express');
 const router = express.Router();
 
