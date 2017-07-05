@@ -2,6 +2,8 @@
  * Created by boebel on 04.07.2017.
  * File for getting Data from Database
  *
+ * Modul kann importiert werden mit:
+ * var data = require(<Pfad zu dieser Datei>);
  */
 const contactPoints = ['192.168.99.100'];
 const keySpace = 'gameoflife';
