@@ -5,6 +5,7 @@
  * Modul kann importiert werden mit:
  * var data = require(<Pfad zu dieser Datei>);
  */
+
 const contactPoints = ['192.168.99.100'];
 const keySpace = 'gameoflife';
 
@@ -15,7 +16,7 @@ const validator = require('validator');
 const Rx = require('rx');
 
 
-let exports = module.exports = {};
+var exports = module.exports = {};
 
 function checkValues(x, y, color) {
   if (x !== undefined && !validator.isInt("" + x)) {
