@@ -7,7 +7,7 @@
       <button md-button id="startGameButton" routerLink="/game">Into the Frey!</button>
     </md-grid-tile>
     <md-grid-tile [colspan]="3">
-      <h2>Here you can make all Settings and stuff</h2>
+      <h2>Here you can make all settings and look at your profile and stuff</h2>
     </md-grid-tile>
   </md-grid-list>
 
@@ -16,17 +16,26 @@
     <md-card>
       <md-card-header>
         <md-card-title>
-          Army
+          Friends
         </md-card-title>
         <md-card-subtitle>
-          Build your army!
+          Challenge your friends!
         </md-card-subtitle>
       </md-card-header>
       <md-card-content>
-        <span>Soldiers:</span> <span>{{soldierAmount}}</span>
+        <table class="homeDisplayTable">
+          <tr>
+            <th>Name</th>
+            <th>Highscore</th>
+          </tr>
+          <tr *ngFor="let friend of friends">
+            <td>{{friend.name}}</td>
+            <td>{{friend.highscore}}</td>
+          </tr>
+        </table>
       </md-card-content>
       <md-card-actions>
-        <button md-button class="lonelyButton">To your Army</button>
+        <button md-button class="lonelyButton">Add Friends</button>
       </md-card-actions>
     </md-card>
     </md-grid-tile>

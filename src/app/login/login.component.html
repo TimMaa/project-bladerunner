@@ -11,11 +11,11 @@
     </p>
     <label>
       Name:
-      <input [(ngModel)]="username">
+      <input [(ngModel)]="username" (keydown)="enableButton()">
     </label>
   </div>
 
   <div id="welcomeActions">
-    <button md-button id="startButton" routerLink="/home">START THE GAME !</button>
+    <button md-button id="startButton" routerLink="/home" [disabled]="isDisabled">START THE GAME !</button>
   </div>
 </div>
