@@ -52,8 +52,11 @@ export class HomeComponent implements OnInit {
   getBaseAPITest() {
     this.apiService.getBase()
       .subscribe(
-        data => this.apiCall = data,
-        error =>  console.log(error)
+        data => {
+          this.apiCall = data;
+          console.log(this.apiCall);
+        },
+            error =>  console.log(error)
       );
   }
 }
