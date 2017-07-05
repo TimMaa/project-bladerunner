@@ -17,6 +17,7 @@
     "@angular/common": "^4.0.0",
     "@angular/compiler": "^4.0.0",
     "@angular/core": "^4.0.0",
+    "@angular/flex-layout": "^2.0.0-beta.8",
     "@angular/forms": "^4.0.0",
     "@angular/http": "^4.0.0",
     "@angular/material": "^2.0.0-beta.7",
@@ -31,8 +32,8 @@
     "morgan": "^1.8.2",
     "rx": "^4.1.0",
     "rxjs": "^5.1.0",
-    "validator": "^7.2.0",
     "socket.io": "^2.0.3",
+    "validator": "^7.2.0",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
