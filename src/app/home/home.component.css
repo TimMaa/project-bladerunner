@@ -11,7 +11,6 @@ h1{
 
 md-card{
   padding: 12px;
-  width: 100%;
 }
 
 md-card-actions{
@@ -48,4 +47,16 @@ md-card-subtitle{
 .lonelyButton{
   width: 50%;
   box-sizing: border-box;
+}
+
+@media screen and (max-width: 1000px){
+  #mainContent{font-size: 0.9em}
+}
+
+@media screen and (max-width: 900px){
+  #mainContent{font-size: 0.8em}
+}
+
+@media screen and (max-width: 900px){
+  #mainContent{font-size: 0.7em}
 }
