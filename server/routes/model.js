@@ -53,11 +53,23 @@ function doQuery(query) {
   });
 }
 
+/**
+ * Alle Punkte werden zurückgegeben
+ *
+ * @returns Observable, welches eine JSON Liste mit den Objekten zurückgibt
+ */
 exports.getPoints = function () {
     let query = 'SELECT * FROM coordinates';
     return doQuery(query);
 }
-
+/**
+ * Punkt wird zurückgeben
+ *
+ * @param x X Koordinate des Punktes
+ * @param y Y Koordinate des Punktes
+ *
+ * @returns Observable, welches das JSON den Objekten zurückgibt
+ */
 exports.getPoint = function (x, y) {
   if (checkValues(x, y)) {
     let query = 'SELECT * FROM coordinates WHERE x = ' + x + ' AND y = ' + y;
@@ -65,6 +77,13 @@ exports.getPoint = function (x, y) {
   }
 }
 
+/**
+ * Punkt wird gesetzt
+ * @param x X Koordinate
+ * @param y Y Koordinate
+ * @param color Farbe des Punktes
+ * @returns Observable, welches anzeigt wann die Transaktion vollständig ist.
+ */
 exports.setPoint = function (x, y, color) {
   if (checkValues(x, y, color)) {
     let query = "INSERT INTO coordinates(x,y,color,time) values (" + x + "," + y + ",'" + color + "', toTimestamp(now()));";
@@ -72,6 +91,22 @@ exports.setPoint = function (x, y, color) {
   }
 }
 
+/**
+ * Punkt wird gelöscht
+ * @param x X Koordinate
+ * @param y Y Koordinate
+ * @returns Observable, welches anzeigt wann die Transaktion vollständig ist.
+ */
+exports.deletePoint = function (x, y) {
+  if (checkValues(x, y)) {
+    let query = "DELETE FROM coordinates WHERE x =" + x + " AND y = " + y + ");";
+    return doQuery(query);
+  }
+}
+
+/*
+TODO Funktion zum prüfen ob ein Punkt existiert
+ */
 exports.isTaken = function (x, y) {
   //return exports.getPoint(x,y,(err,data)=> {callback(return data instanceof Object});
 }
