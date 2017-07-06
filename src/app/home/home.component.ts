@@ -11,8 +11,6 @@ import {ApiService} from '../services/api.service';
 })
 export class HomeComponent implements OnInit {
 
-  soldierAmount: number = 10;
-
   previousBattles: Object[] = [
     {
       start: 1497780630000,
@@ -44,10 +42,6 @@ export class HomeComponent implements OnInit {
     {
       name: 'Freddy',
       highscore: 87123,
-    },
-    {
-      name: 'Axl',
-      highscore: 0,
     },
     {
       name: 'Paul',
