@@ -4,6 +4,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpModule} from '@angular/http';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MdButtonModule, MdInputModule, MdCardModule, MdGridListModule} from '@angular/material';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 
 import {AppComponent} from './app.component';
@@ -26,6 +27,7 @@ import {routing} from './app.routing';
     FormsModule,
     HttpModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
     routing,
     MdCardModule,
     MdButtonModule,
