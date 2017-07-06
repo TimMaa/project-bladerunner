@@ -6,7 +6,7 @@
  * var data = require(<Pfad zu dieser Datei>);
  */
 
-const contactPoints = ['192.168.99.100'];
+const contactPoints = process.env.CASSANDRA ? process.env.CASSANDRA.split(',') : ['192.168.99.100'];
 const keySpace = 'gameoflife';
 
 const cassandra = require('cassandra-driver');
