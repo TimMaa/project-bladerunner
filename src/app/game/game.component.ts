@@ -7,6 +7,9 @@ import {Component, OnInit} from '@angular/core';
 })
 export class GameComponent implements OnInit {
 
+  canvasWidth: number;
+  canvasHeight: number;
+  
   posTop: number;
   posLeft: number;
 
@@ -18,6 +21,8 @@ export class GameComponent implements OnInit {
   ngOnInit() {
     this.posTop = 0;
     this.posLeft = 0;
+    this.canvasHeight = 2000;
+    this.canvasWidth = 2000;
   }
 
   getData() {
@@ -33,27 +38,28 @@ export class GameComponent implements OnInit {
     let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
     let dh = document.body.clientHeight;
     let dw = document.body.clientWidth;
-    let cy = c.offsetTop;
-    let cx = c.offsetLeft;
-
+    let ct = c.offsetTop;
+    let cl = c.offsetLeft;
+    let cb = this.canvasHeight - dh + c.offsetTop;
+    let cr = this.canvasWidth - dw + c.offsetLeft;
     switch (element) {
       case 1:
-        if (cy < 0) {
+        if (ct < 0) {
           this.posTop += 50;
         }
         break;
       case 2:
-        if (cx < 0) {
+        if (cl < 0) {
           this.posLeft -= 50;
         }
         break;
       case 3:
-        if (cy < 0) {
+        if (cb < 0) {
           this.posTop -= 50;
         }
         break;
       case 4:
-        if (cx < 0) {
+        if (cr < 0) {
           this.posLeft += 50;
         }
         break;
