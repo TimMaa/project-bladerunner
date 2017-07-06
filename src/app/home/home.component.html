@@ -1,37 +1,47 @@
-<div id="mainContent">
-  <md-grid-list id="topbar" cols="4" rowHeight="40px">
-    <md-grid-tile [colspan]="3">
-      <h1>Welcome</h1>
-    </md-grid-tile>
-    <md-grid-tile [colspan]="1" [rowspan]="2">
-      <button md-button id="startGameButton" routerLink="/game">Into the Frey!</button>
-    </md-grid-tile>
-    <md-grid-tile [colspan]="3">
-      <h2>Here you can make all settings and look at your profile and stuff</h2>
-    </md-grid-tile>
-  </md-grid-list>
+<div id="mainContent" fxLayout="row" fxLayoutWrap>
+  <div fxFlex="100">
+    <md-grid-list id="topbar" cols="4" rowHeight="40px">
+      <md-grid-tile [colspan]="3">
+        <h1>Welcome</h1>
+      </md-grid-tile>
+      <md-grid-tile [colspan]="1" [rowspan]="2">
+        <button md-button id="startGameButton" routerLink="/game">Into the Frey!</button>
+      </md-grid-tile>
+      <md-grid-tile [colspan]="3">
+        <h2>Here you can make all settings and look at your profile and stuff</h2>
+      </md-grid-tile>
+    </md-grid-list>
+  </div>
 
-  <md-grid-list cols="3">
-    <md-grid-tile>
+  <div fxFlex="50">
     <md-card>
       <md-card-header>
         <md-card-title>
-          Army
+          Friends
         </md-card-title>
         <md-card-subtitle>
-          Build your army!
+          Challenge your friends!
         </md-card-subtitle>
       </md-card-header>
       <md-card-content>
-        <span>Soldiers:</span> <span>{{soldierAmount}}</span>
+        <table class="homeDisplayTable">
+          <tr>
+            <th>Name</th>
+            <th>Highscore</th>
+          </tr>
+          <tr *ngFor="let friend of friends">
+            <td>{{friend.name}}</td>
+            <td>{{friend.highscore}}</td>
+          </tr>
+        </table>
       </md-card-content>
       <md-card-actions>
-        <button md-button class="lonelyButton">To your Army</button>
+        <button md-button class="lonelyButton">Add Friends</button>
       </md-card-actions>
     </md-card>
-    </md-grid-tile>
+  </div>
 
-    <md-grid-tile>
+  <div fxFlex="50">
     <md-card>
       <md-card-header>
         <md-card-title>
@@ -42,26 +52,26 @@
         </md-card-subtitle>
       </md-card-header>
       <md-card-content>
-          <table class="homeDisplayTable">
-            <tr>
-              <th>Start</th>
-              <th>End</th>
-              <th>Highscore</th>
-            </tr>
-            <tr *ngFor="let battle of previousBattles">
-              <td>{{battle.start | date:'dd.MM HH:mm'}}</td>
-              <td>{{battle.end | date:'dd.MM HH:mm'}}</td>
-              <td>{{battle.score}}</td>
-            </tr>
-          </table>
+        <table class="homeDisplayTable">
+          <tr>
+            <th>Start</th>
+            <th>End</th>
+            <th>Highscore</th>
+          </tr>
+          <tr *ngFor="let battle of previousBattles">
+            <td>{{battle.start | date:'dd.MM HH:mm'}}</td>
+            <td>{{battle.end | date:'dd.MM HH:mm'}}</td>
+            <td>{{battle.score}}</td>
+          </tr>
+        </table>
       </md-card-content>
       <md-card-actions>
         <button md-button class="lonelyButton">Expand</button>
       </md-card-actions>
     </md-card>
-    </md-grid-tile>
+  </div>
 
-    <md-grid-tile>
+  <div fxFlex="50">
     <md-card>
       <md-card-header>
         <md-card-title>
@@ -108,6 +118,5 @@
         <button md-button routerLink="/login">Logout</button>
       </md-card-actions>
     </md-card>
-    </md-grid-tile>
-  </md-grid-list>
+  </div>
 </div>

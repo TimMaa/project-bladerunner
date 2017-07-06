@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import {ApiService} from '../services/api.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  providers: [
+    ApiService
+  ],
 })
 export class HomeComponent implements OnInit {
-
-  soldierAmount: number = 10;
 
   previousBattles: Object[] = [
     {
@@ -32,13 +34,46 @@ export class HomeComponent implements OnInit {
     },
   ];
 
+  friends: Object[] = [
+    {
+      name: 'Ozzy',
+      highscore: 7892,
+    },
+    {
+      name: 'Freddy',
+      highscore: 87123,
+    },
+    {
+      name: 'Paul',
+      highscore: 1960,
+    },
+    {
+      name: 'Billie Joe',
+      highscore: 2171857883,
+    }
+    ];
+
   armyColor: string = '#133769';
   username: string = 'DerDreiJuniWallach';
   password: string = '*********';
 
-  constructor() { }
+  apiCall: string;
+
+  constructor(private apiService: ApiService) {
+    this.getBaseAPITest();
+  }
 
   ngOnInit() {
   }
 
+  getBaseAPITest() {
+    this.apiService.getBase()
+      .subscribe(
+        data => {
+          this.apiCall = data;
+          console.log(this.apiCall);
+        },
+            error =>  console.log(error)
+      );
+  }
 }

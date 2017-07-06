@@ -6,6 +6,7 @@ html, body{
   background: url(assets/img/city.jpg);
   background-size: cover;
   overflow: hidden;
+  user-select: none;
 }
 
 md-card{
