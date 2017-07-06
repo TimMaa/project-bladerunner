@@ -28,4 +28,4 @@ function processArray(array, fn) {
 setTimeout(function() {
   /* INIT */
   processArray(queries, query => client.execute(query).then(result => console.log(result)).catch(err => console.log(err)));
-}, 20000);
+}, 30000);
