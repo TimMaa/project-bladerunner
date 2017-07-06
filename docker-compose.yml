@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+    seed:
+        container_name: cassandra_seed
+        image: cassandra:3
+        restart: always
+
+    cassandra:
+        image: cassandra:3
+        restart: always
+        environment:
+          - CASSANDRA_SEEDS=cassandra_seed
+
+    init:
+        image: bladerunner
+        command: ["node", "init.js"]
+        environment:
+          - CASSANDRA=cassandra_seed
+
+    usecase:
+        image: bladerunner
+        restart: always
+        ports:
+          - "3000:3000"
+        environment:
+          - CASSANDRA=cassandra_seed
