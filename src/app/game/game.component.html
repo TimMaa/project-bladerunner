@@ -2,7 +2,8 @@
 <div style="height: 100%; position: absolute; width: 20px; right: 0" (mousemove)="moveWindow(2)"></div>
 <div style="width: 100%; position: absolute; height: 20px; bottom: 0" (mousemove)="moveWindow(3)"></div>
 <div style="height: 100%; position: absolute; width: 20px; left: 0" (mousemove)="moveWindow(4)"></div>
-<canvas width="800" height="500" id="gameCanvas" (click)="getMousePosition($event)"></canvas>
+<canvas width="2000" height="2000" id="gameCanvas" (click)="getMousePosition($event)"
+        [style.top.px]="posTop" [style.left.px]="posLeft"></canvas>
 <img src="assets/img/arena.png" id="arena">
 <button md-button routerLink="/home" id="homeButton">Back to Home</button>
 <button md-button id="imageDataButton" (click)="getData()">Get ImageData</button>

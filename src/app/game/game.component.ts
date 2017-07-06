@@ -7,46 +7,54 @@ import {Component, OnInit} from '@angular/core';
 })
 export class GameComponent implements OnInit {
 
+  posTop: number;
+  posLeft: number;
+
   playerID: string;
 
   constructor() {
   }
 
   ngOnInit() {
-
+    this.posTop = 0;
+    this.posLeft = 0;
   }
 
   getData() {
+    /*
     let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
     let ctx = c.getContext('2d');
 
     console.log(ctx.getImageData(0, 0, c.width, c.height).data);
+     */
   }
 
   moveWindow(element: number) {
     let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
+    let dh = document.body.clientHeight;
+    let dw = document.body.clientWidth;
     let cy = c.offsetTop;
     let cx = c.offsetLeft;
 
     switch (element) {
       case 1:
         if (cy < 0) {
-          console.log('UP');
+          this.posTop += 50;
         }
         break;
       case 2:
         if (cx < 0) {
-          console.log('RIGHT');
+          this.posLeft -= 50;
         }
         break;
       case 3:
         if (cy < 0) {
-          console.log('DOWN');
+          this.posTop -= 50;
         }
         break;
       case 4:
         if (cx < 0) {
-          console.log('LEFT');
+          this.posLeft += 50;
         }
         break;
       default:

@@ -1,8 +1,6 @@
 canvas{
   background-color: rgba(255,255,255,0.5);
   position: absolute;
-  top: calc(50% - (500px / 2));
-  left: calc(50% - (800px / 2));
   z-index: 500;
 }
 
