@@ -3,20 +3,22 @@
     <h1>
       {{title}}
     </h1>
-    <p *ngIf="!username">
+    <p *ngIf="!userService.user.name">
       Here you can login!
     </p>
-    <p *ngIf="username">
-      Welcome {{username}}!
+    <p *ngIf="userService.user.name">
+      Welcome {{userService.user.name}}!
     </p>
     <label>
       Name:
-      <input [(ngModel)]="username" (keydown)="enableButton()">
+      <input [(ngModel)]="userService.user.name" (keydown)="enableButton()">
     </label>
   </div>
 
   <div id="welcomeActions">
-    <button md-button id="startButton" routerLink="/home" [disabled]="isDisabled">START THE GAME !</button>
+    <button md-button id="startButton" [disabled]="isDisabled">
+      START THE GAME !
+    </button>
   </div>
 </div>
 

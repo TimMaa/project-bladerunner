@@ -1,4 +1,5 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {UserManagementService} from '../services/user-management.service';
 
 @Component({
   selector: 'app-login',
@@ -9,19 +10,16 @@ export class LoginComponent implements OnInit {
 
   title = 'This is the super sick game of life!!!';
   isDisabled: boolean = true;
-  username: string;
 
-  @Output() login: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  constructor() { }
+  constructor(private userService: UserManagementService) {
+  }
 
   ngOnInit() {
   }
 
   enableButton() {
-    if (this.username) {
+    if (this.userService.user.name) {
       this.isDisabled = false;
     }
   }
-
 }
