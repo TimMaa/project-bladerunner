@@ -1,10 +1,26 @@
-<div style="width: 100%; position: absolute; height: 20px; top: 0" (mousemove)="moveWindow(1)"></div>
-<div style="height: 100%; position: absolute; width: 20px; right: 0" (mousemove)="moveWindow(2)"></div>
-<div style="width: 100%; position: absolute; height: 20px; bottom: 0" (mousemove)="moveWindow(3)"></div>
-<div style="height: 100%; position: absolute; width: 20px; left: 0" (mousemove)="moveWindow(4)"></div>
-<canvas width="2000" height="2000" id="gameCanvas" (click)="getMousePosition($event)"
-        [style.top.px]="posTop" [style.left.px]="posLeft"></canvas>
-<img src="assets/img/arena.png" id="arena">
-<button md-button routerLink="/home" id="homeButton">Back to Home</button>
-<button md-button id="imageDataButton" (click)="getData()">Get ImageData</button>
+<div *ngIf="posTop < 0 && zoom == 1"
+     style="width: 100%; height: 30px; top: 0;"
+     class="arrowDiv material-icons" (mousemove)="moveWindow(1)">keyboard_arrow_up</div>
+<div *ngIf="posRight > 0 && zoom == 1"
+     style="height: 100%; width: 30px; right: 0;"
+     class="arrowDiv material-icons" (mousemove)="moveWindow(2)">keyboard_arrow_right</div>
+<div *ngIf="posBottom > 0 && zoom == 1"
+     style="width: 100%; height: 30px; bottom: 0;"
+     class="arrowDiv material-icons" (mousemove)="moveWindow(3)">keyboard_arrow_down</div>
+<div *ngIf="posLeft < 0 && zoom == 1"
+     style="height: 100%; width: 30px; left: 0;"
+     class="arrowDiv material-icons" (mousemove)="moveWindow(4)">keyboard_arrow_left</div>
+
+<canvas width="{{canvasWidth}}" height="{{canvasHeight}}" id="gameCanvas" (click)="getMousePosition($event)"
+        [style.top.px]="posTop" [style.left.px]="posLeft" [style.zoom]="zoom"></canvas>
+
+<button md-fab routerLink="/home" id="homeButton">
+  <i class="material-icons">home</i>
+</button>
+<button md-fab id="imageDataButton" (click)="changeZoom()">
+  <i *ngIf="zoom == 1;else not_zoomed" class="material-icons">zoom_out</i>
+  <ng-template #not_zoomed>
+    <i class="material-icons">zoom_in</i>
+  </ng-template>
+</button>
 
