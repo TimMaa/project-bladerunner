@@ -75,4 +75,9 @@ export class HomeComponent implements OnInit {
             error =>  console.log(error)
       );
   }
+
+  logout() {
+    this.userService.user.name = '';
+    this.userService.user.type = 0;
+  }
 }

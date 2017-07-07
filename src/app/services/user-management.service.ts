@@ -5,7 +5,7 @@ export class UserManagementService {
 
   user = {
     name: '',
-    type: ''
+    type: 0,
   };
 
   constructor() { }
