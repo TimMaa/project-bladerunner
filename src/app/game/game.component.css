@@ -1,19 +1,11 @@
 canvas{
-  background-color: rgba(255,255,255,0.5);
+  background-color: rgba(255,255,255,1);
   position: absolute;
-  top: calc(50% - (500px / 2));
-  left: calc(50% - (800px / 2));
   z-index: 500;
 }
 
-canvas.moveUp{
-  animation: moveUp 0.1s;
-}
-
-#arena{
-  width: 100%;
-  position: absolute;
-  top: -250px;
+div{
+  z-index: 950;
 }
 
 #homeButton{
@@ -32,15 +24,9 @@ canvas.moveUp{
   margin: 12px;
 }
 
-div{
-  z-index: 950;
-}
-
-@keyframes moveUp {
-  0%{
-    top: 0;
-  }
-  100%{
-    top: 50px;
-  }
+.arrowDiv{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
