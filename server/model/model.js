@@ -62,7 +62,6 @@ function shuffle(a) {
   }
 }
 
-
 var exports = module.exports = {};
 
 /**
