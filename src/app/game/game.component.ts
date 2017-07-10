@@ -135,7 +135,6 @@ export class GameComponent implements OnInit, AfterViewInit {
    * Only used when opening the GameComponent
    */
   getCurrentCanvas() {
-    try {
     this.apiService.getAllPoints()
       .subscribe(
         data => {
@@ -143,9 +142,6 @@ export class GameComponent implements OnInit, AfterViewInit {
         },
         error => console.log(error)
       );
-    } catch (err) {
-      console.log(err);
-    }
   }
 
   /**
