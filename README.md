@@ -32,3 +32,13 @@ We don't need to test.
 ## Running end-to-end tests
 
 And especially not E2E
+
+## Build Test Cassandra Container
+
+`docker run docker run —name <your_beautiful_name_here> -d -p "0.0.0.0:7191:7191" -p "0.0.0.0:7000:7000" -p "0.0.0.0:7001:7001" -p "0.0.0.0:9160:9160" -p "0.0.0.0:9042:9042" -e CASSANDRA_BROADCAST_ADDRESS=192.168.99.100 cassandra:latest`
+
+## Build Test nchan Container
+
+`cd /nchan
+docker-compose build
+docker run --name <your_beautiful_other_name_here> -d -p "0.0.0.0:9080:9080" <the_composed_image_name_here>:latet`
