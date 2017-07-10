@@ -25,6 +25,13 @@ const wordCount = 3;
 
 var exports = module.exports = {};
 
+/**
+ * Checks inputs
+ * @param x X Coord.
+ * @param y Y Coord.
+ * @param color Color
+ * @returns {*}
+ */
 function checkValues(x, y, color) {
   if (x !== undefined && !validator.isInt("" + x)) {
     return null;
@@ -37,7 +44,11 @@ function checkValues(x, y, color) {
   }
   return true;
 }
-
+/**
+ * Starts a query on the Database
+ * @param query Query to execute
+ * @returns {*} Observable
+ */
 exports.doQuery =  function(query) {
   return Rx.Observable.create(observer => {
     client.execute(query, {prepare: true}, function (err, result) {
@@ -55,6 +66,10 @@ exports.doQuery =  function(query) {
   });
 }
 
+/**
+ * Gets the actual Position of the Gameword
+ * @returns {number} Position
+ */
 function getWordPositionByTime() {
   let time = Date.now();
   return Math.floor(Math.floor(time / 1000) / 300) % wordCount;
@@ -116,6 +131,12 @@ exports.deletePoint = function (x, y) {
   }
 }
 
+/**
+ * Compares an guess with the correct answer
+ *
+ * @param loesung
+ * @param callback Callback(boolean) -> True guess is correct; False guess is incorrect.
+ */
 exports.getSolution = function (loesung, callback) {
   let query = "SELECT word from words WHERE wordno = " + getWordPositionByTime();
   let erg = exports.doQuery(query);
@@ -124,13 +145,6 @@ exports.getSolution = function (loesung, callback) {
       callback(data[0].word === loesung);
     }
     , err => callback(null));
-
-  /*
-   TODO Funktion zum prüfen ob ein Punkt existiert
-   */
-  exports.isTaken = function (x, y) {
-    //return exports.getPoint(x,y,(err,data)=> {callback(return data instanceof Object});
-  }
 
 
 }

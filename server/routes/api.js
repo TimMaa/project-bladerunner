@@ -1,20 +1,34 @@
 /**
  * Created by Basti on 04.07.2017.
+ * Edited by Markus on 10.07.2017
+ *
+ * Module to create REST ENDPOINTS
+ *
+ * Op   | ENDPOINT | Method            | Input
+ * -----|------------------------------|--------
+ * GET  | /points/ | GET ALL POINTS    | NONE
+ * POST | /points/ | SETS POINT        | JSON-> Parameters x,y,color
+ * GET  |/solution/| COMPARES SOLUTION | URL Parameter  /solution/:solution -> Guess
+ * GET  |  /       | TESTS API         | NONE
  */
 
 const express = require('express');
 const router = express.Router();
+
 /**
  * Datamodel
  */
 const data = require('../model/model');
 
-/* GET api listing. */
+/**
+ *  GET | TESTS API
+ */
 router.get('/', (req, res) => {
   res.send('api works');
 });
 
 /**
+ * GET | GET ALL POINTS
  * REST ENDPOINT
  * Endpoint to get all points set
  *
@@ -30,6 +44,7 @@ router.get('/points/', (req, res) => {
 });
 
 /**
+ * POST | SET NEW POINT
  * REST ENDPOINT
  * Endpoint to set new Points
  *
@@ -65,7 +80,9 @@ router.post('/points/', (req, res) => {
 });
 
 /**
- *
+ *GET | COMPARES GUESS
+ * Compares an guess with the correct answer
+ * returns true or false
  */
 router.get('/solution/:solution', (req, res) => {
   let solution = req.params.solution;
@@ -75,4 +92,7 @@ router.get('/solution/:solution', (req, res) => {
   });
 });
 
+/**
+ * Exports the router
+ */
 module.exports = router;
