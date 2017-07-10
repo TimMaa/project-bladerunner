@@ -11,7 +11,7 @@
      style="height: 100%; width: 30px; left: 0;"
      class="arrowDiv material-icons" (mousemove)="moveWindow(4)">keyboard_arrow_left</div>
 
-<canvas width="{{canvasWidth}}" height="{{canvasHeight}}" id="gameCanvas" (click)="getMousePosition($event)"
+<canvas #canvas width="{{canvasWidth}}" height="{{canvasHeight}}" id="gameCanvas" (click)="getMousePosition($event)"
         [style.top.px]="posTop" [style.left.px]="posLeft" [style.zoom]="zoom"></canvas>
 
 <button md-fab routerLink="/home" id="homeButton">

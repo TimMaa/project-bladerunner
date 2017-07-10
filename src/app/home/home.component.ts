@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import {ApiService} from '../services/api.service';
 import {UserManagementService} from 'app/services/user-management.service';
 
 @Component({
@@ -57,23 +56,11 @@ export class HomeComponent implements OnInit {
 
   apiCall: string;
 
-  constructor(private apiService: ApiService, private userService: UserManagementService) {
-    this.getBaseAPITest();
+  constructor(private userService: UserManagementService) {
     this.username = userService.user.name;
   }
 
   ngOnInit() {
-  }
-
-  getBaseAPITest() {
-    this.apiService.getBase()
-      .subscribe(
-        data => {
-          this.apiCall = data;
-          console.log(this.apiCall);
-        },
-            error =>  console.log(error)
-      );
   }
 
   logout() {

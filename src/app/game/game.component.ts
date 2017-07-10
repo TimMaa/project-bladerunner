@@ -1,5 +1,6 @@
-import {Component, OnInit} from '@angular/core';
-import {ApiService} from "../services/api.service";
+import {Component, OnInit, AfterViewChecked, ContentChild, ElementRef, ViewChild} from '@angular/core';
+import {ApiService} from '../services/api.service';
+import {UserManagementService} from "../services/user-management.service";
 
 @Component({
   selector: 'app-game',
@@ -16,12 +17,40 @@ export class GameComponent implements OnInit {
   posLeft: number;
   posBottom: number;
 
-  movingInterval;
+  points = [
+    {
+      'x': 50,
+      'y': 20,
+      'color': '#FFFFFF',
+      'time': '2011-02-03T00:00:00.000Z'
+    },
+    {
+      'x': 10,
+      'y': 10,
+      'color': '#FF00FF',
+      'time': '2017-07-10T13:47:09.339Z'
+    },
+    {
+      'x': 10,
+      'y': 20,
+      'color': '#FF0000',
+      'time': '2017-07-10T13:57:44.796Z'
+    },
+    {
+      'x': 30,
+      'y': 20,
+      'color': '#FF0000',
+      'time': '2017-07-07T12:19:44.817Z'
+    }
+  ];
 
   zoom: number = 1;
 
-  constructor(private apiService: ApiService) {
-    this.getCurrentCanvas();
+  @ViewChild('canvas') canvas: ElementRef;
+
+  constructor(private apiService: ApiService, private userService: UserManagementService) {
+
+    // this.getCurrentCanvas();
   }
 
   ngOnInit() {
@@ -35,6 +64,10 @@ export class GameComponent implements OnInit {
     this.canvasWidth = 2000;
     this.posRight = this.canvasWidth - window.innerWidth + this.posLeft;
     this.posBottom = this.canvasHeight - window.innerHeight + this.posTop;
+  }
+
+  ngAfterViewInit() {
+    this.getCurrentCanvas();
   }
 
   changeZoom() {
@@ -108,30 +141,32 @@ export class GameComponent implements OnInit {
   this.apiService.getAllPoints()
     .subscribe(
         data => {
-          console.log(data);
+          this.drawBoard(data);
         },
         error =>  console.log(error)
       );
+  }
+
+  drawBoard(points) {
+    let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
+    let ctx = c.getContext('2d');
+
+    for (let point of points) {
+      ctx.fillStyle = point.color;
+      ctx.fillRect(point.x * 10, point.y * 10, 10, 10);
+    }
   }
 
   getMousePosition(event) {
     if (this.zoom === 1) {
       let x = event.x;
       let y = event.y;
-
       let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
-      let ctx = c.getContext('2d');
 
       x -= c.offsetLeft;
       y -= c.offsetTop;
 
-      this.apiService.submitPoint(Math.floor(x / 10), Math.floor(y / 10), '#133769');
-
-      /*
-      ctx.fillStyle = '#133769';
-
-      ctx.fillRect(Math.floor(x / 10) * 10, Math.floor(y / 10) * 10, 10, 10);
-      */
+      this.apiService.submitPoint(Math.floor(x / 10), Math.floor(y / 10), this.userService.user.color);
     }
   }
 

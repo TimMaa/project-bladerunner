@@ -44,7 +44,7 @@ export class ApiService {
 
   getAllPoints() {
     return this.http.get(this.baseUrl + 'points/')
-      .map(this.extractText)
+      .map(this.extractJson)
       .catch(this.handleError);
   }
 
