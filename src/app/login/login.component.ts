@@ -1,4 +1,5 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {UserManagementService} from '../services/user-management.service';
 
 @Component({
   selector: 'app-login',
@@ -7,21 +8,36 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
-  title = 'This is the super sick game of life!!!';
   isDisabled: boolean = true;
-  username: string;
 
-  @Output() login: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  constructor() { }
+  constructor(private userService: UserManagementService) {
+  }
 
   ngOnInit() {
   }
 
-  enableButton() {
-    if (this.username) {
-      this.isDisabled = false;
+  getGColor() {
+    if (this.userService.user.type === 2) {
+      return 'rgba(194, 194, 194, 1)';
+    } else {
+      return 'rgba(221, 221, 221, 1)';
     }
   }
 
+  getPColor() {
+    if (this.userService.user.type === 1) {
+      return 'rgba(194, 194, 194, 1)';
+    } else {
+      return 'rgba(221, 221, 221, 1)';
+    }
+
+  }
+
+  enableButton() {
+    if (this.userService.user.name && (this.userService.user.type === 1 || this.userService.user.type === 2)) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 }

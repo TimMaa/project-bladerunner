@@ -115,8 +115,10 @@
       </md-card-content>
       <md-card-actions>
         <button md-button>Security Settings</button>
-        <button md-button routerLink="/login">Logout</button>
+        <button md-button routerLink="/login" (click)="logout()">Logout</button>
       </md-card-actions>
     </md-card>
   </div>
 </div>
+
+<app-footer></app-footer>

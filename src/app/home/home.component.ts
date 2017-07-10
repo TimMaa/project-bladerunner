@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {ApiService} from '../services/api.service';
+import {UserManagementService} from 'app/services/user-management.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  providers: [
-    ApiService
-  ],
+  providers: [],
 })
 export class HomeComponent implements OnInit {
 
@@ -53,14 +52,14 @@ export class HomeComponent implements OnInit {
     }
     ];
 
-  armyColor: string = '#133769';
-  username: string = 'DerDreiJuniWallach';
+  username: string;
   password: string = '*********';
 
   apiCall: string;
 
-  constructor(private apiService: ApiService) {
+  constructor(private apiService: ApiService, private userService: UserManagementService) {
     this.getBaseAPITest();
+    this.username = userService.user.name;
   }
 
   ngOnInit() {
@@ -75,5 +74,10 @@ export class HomeComponent implements OnInit {
         },
             error =>  console.log(error)
       );
+  }
+
+  logout() {
+    this.userService.user.name = '';
+    this.userService.user.type = 0;
   }
 }
