@@ -33,7 +33,7 @@
   </button>
 </div>
 
-<canvas width="{{canvasWidth}}" height="{{canvasHeight}}" id="gameCanvas" (click)="getMousePosition($event)"
+<canvas #canvas width="{{canvasWidth}}" height="{{canvasHeight}}" id="gameCanvas" (click)="getMousePosition($event)"
         [style.top.px]="posTop" [style.left.px]="posLeft" [style.zoom]="zoom"></canvas>
 
 <div *ngIf="colorsShown" id="colorPalette">
