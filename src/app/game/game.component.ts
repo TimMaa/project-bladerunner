@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {UserManagementService} from '../services/user-management.service';
 
 @Component({
   selector: 'app-game',
@@ -15,11 +16,31 @@ export class GameComponent implements OnInit {
   posLeft: number;
   posBottom: number;
 
-  movingInterval;
-
+  colorsShown: boolean = false;
+  inputShown: boolean = true;
   zoom: number = 1;
 
-  constructor() {
+  colors: string[] = [
+    '#000',
+    '#800',
+    '#F00',
+    '#F0F',
+    '#088',
+    '#080',
+    '#0F0',
+    '#0FF',
+    '#008',
+    '#808',
+    '#00F',
+    '#888',
+    '#880',
+    '#FF0',
+    '#FFF',
+    '#C0C0C0',
+  ]
+
+  constructor(private userService: UserManagementService) {
+
   }
 
   ngOnInit() {
@@ -103,20 +124,27 @@ export class GameComponent implements OnInit {
   }
 
   getMousePosition(event) {
-    if (this.zoom === 1) {
-      let x = event.x;
-      let y = event.y;
-
+    if (this.zoom === 1 && this.userService.user.type === 1) {
       let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
       let ctx = c.getContext('2d');
 
-      x -= c.offsetLeft;
-      y -= c.offsetTop;
+      let x = event.x - c.offsetLeft;
+      let y = event.y - c.offsetTop;
+
+      // this.http.post()
 
       ctx.fillStyle = '#133769';
 
       ctx.fillRect(Math.floor(x / 10) * 10, Math.floor(y / 10) * 10, 10, 10);
     }
+  }
+
+  showInput() {
+    this.inputShown = !this.inputShown;
+  }
+
+  showColorPalette() {
+    this.colorsShown = !this.colorsShown;
   }
 
 }

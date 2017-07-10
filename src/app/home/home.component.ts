@@ -52,6 +52,21 @@ export class HomeComponent implements OnInit {
     }
     ];
 
+  colors: Object[] = [
+    {
+      name: 'Sparkly',
+      price: 9.95
+    },
+    {
+      name: 'Dreamy',
+      price: 12.95
+    },
+    {
+      name: 'Foresty',
+      price: 7.99
+    },
+  ]
+
   username: string;
   password: string = '*********';
 
