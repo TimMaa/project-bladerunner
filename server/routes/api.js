@@ -11,7 +11,7 @@
  * GET  |/solution/| COMPARES SOLUTION | URL Parameter  /solution/:solution -> Guess
  * GET  |  /       | TESTS API         | NONE
  */
-
+const path = require('path');
 const express = require('express');
 const router = express.Router();
 
@@ -52,6 +52,7 @@ router.get('/points/', (req, res) => {
  */
 router.post('/points/', (req, res) => {
   if (req.body) {
+    console.log(req.body);
     let body = req.body
       , x = body.x
       , y = body.y
@@ -91,6 +92,18 @@ router.get('/solution/:solution', (req, res) => {
     res.send(data);
   });
 });
+
+
+/**
+ *  GET redirects to Bots page and script
+ */
+router.get('/bot', (req, res) => {
+  res.sendFile(path.join(__dirname, '../bots/bots.html'));
+});
+router.get('/bot/bots.js', (req, res) => {
+  res.sendFile(path.join(__dirname, '../bots/bots.js'));
+});
+
 
 /**
  * Exports the router
