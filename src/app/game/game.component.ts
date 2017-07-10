@@ -1,13 +1,13 @@
-import {Component, OnInit, AfterViewChecked, ContentChild, ElementRef, ViewChild} from '@angular/core';
+import {Component, OnInit, AfterViewInit, ElementRef, ViewChild} from '@angular/core';
 import {ApiService} from '../services/api.service';
-import {UserManagementService} from "../services/user-management.service";
+import {UserManagementService} from '../services/user-management.service';
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, AfterViewInit {
 
   canvasWidth: number;
   canvasHeight: number;
@@ -17,9 +17,9 @@ export class GameComponent implements OnInit {
   posLeft: number;
   posBottom: number;
 
-<<<<<<< HEAD
   colorsShown: boolean = false;
   inputShown: boolean = true;
+  guessedSolution: string;
   zoom: number = 1;
 
   colors: string[] = [
@@ -41,74 +41,10 @@ export class GameComponent implements OnInit {
     '#C0C0C0',
   ];
 
-
-  points = [
-    {
-      'x': 50,
-      'y': 20,
-      'color': '#FFFFFF',
-      'time': '2011-02-03T00:00:00.000Z'
-    },
-    {
-      'x': 10,
-      'y': 10,
-      'color': '#FF00FF',
-      'time': '2017-07-10T13:47:09.339Z'
-    },
-    {
-      'x': 10,
-      'y': 20,
-      'color': '#FF0000',
-      'time': '2017-07-10T13:57:44.796Z'
-    },
-    {
-      'x': 30,
-      'y': 20,
-      'color': '#FF0000',
-      'time': '2017-07-07T12:19:44.817Z'
-    }
-  ];
-
   @ViewChild('canvas') canvas: ElementRef;
 
   constructor(private apiService: ApiService, private userService: UserManagementService) {
     this.getCurrentCanvas();
-=======
-  points = [
-    {
-      'x': 50,
-      'y': 20,
-      'color': '#FFFFFF',
-      'time': '2011-02-03T00:00:00.000Z'
-    },
-    {
-      'x': 10,
-      'y': 10,
-      'color': '#FF00FF',
-      'time': '2017-07-10T13:47:09.339Z'
-    },
-    {
-      'x': 10,
-      'y': 20,
-      'color': '#FF0000',
-      'time': '2017-07-10T13:57:44.796Z'
-    },
-    {
-      'x': 30,
-      'y': 20,
-      'color': '#FF0000',
-      'time': '2017-07-07T12:19:44.817Z'
-    }
-  ];
-
-  zoom: number = 1;
-
-  @ViewChild('canvas') canvas: ElementRef;
-
-  constructor(private apiService: ApiService, private userService: UserManagementService) {
-
-    // this.getCurrentCanvas();
->>>>>>> 3c421b4c4c85dbefbeee9f3d8bd267a0ff1fa66b
   }
 
   ngOnInit() {
@@ -125,7 +61,7 @@ export class GameComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.getCurrentCanvas();
+    // this.getCurrentCanvas();
   }
 
   changeZoom() {
@@ -221,7 +157,7 @@ export class GameComponent implements OnInit {
 
       let x = event.x - c.offsetLeft;
       let y = event.y - c.offsetTop;
-      
+
       this.apiService.submitPoint(Math.floor(x / 10), Math.floor(y / 10), this.userService.user.color);
     }
   }
@@ -232,6 +168,10 @@ export class GameComponent implements OnInit {
 
   showColorPalette() {
     this.colorsShown = !this.colorsShown;
+  }
+
+  submitSolution() {
+    this.apiService.submitSolution(this.guessedSolution);
   }
 
 }
