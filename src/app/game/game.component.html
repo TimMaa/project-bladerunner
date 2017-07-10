@@ -42,8 +42,8 @@
 
 <div *ngIf="colorsShown" id="colorPalette">
   <md-grid-list cols="4">
-    <md-grid-tile *ngFor="let color of colors">
-        <button class="colorButton" [style.color]="color" [style.background-color]="color">#</button>
+    <md-grid-tile *ngFor="let color of colors, let i = index">
+        <button class="colorButton" [style.color]="color" [style.background-color]="color" (click)="setColor(i)">#</button>
     </md-grid-tile>
   </md-grid-list>
 </div>

@@ -47,11 +47,11 @@ export class GameComponent implements OnInit, AfterViewInit {
     this.getCurrentCanvas();
   }
 
+  /**
+   * Set Canvas Starting Position (Top, Left) and Canvas Dimension (Height and Width) on Init
+   * Right and Bottom are for scrolling
+   */
   ngOnInit() {
-    /**
-     * Set Canvas Starting Position (Top, Left) and Canvas Dimension (Height and Width) on Init
-     * Right and Bottom are for scrolling
-     */
     this.posTop = 0;
     this.posLeft = 0;
     this.canvasHeight = 2000;
@@ -131,16 +131,24 @@ export class GameComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Gets all the points and draws them
+   * Only used when opening the GameComponent
+   */
   getCurrentCanvas() {
-  this.apiService.getAllPoints()
-    .subscribe(
+    this.apiService.getAllPoints()
+      .subscribe(
         data => {
           this.drawBoard(data);
         },
-        error =>  console.log(error)
+        error => console.log(error)
       );
   }
 
+  /**
+   * Draws a JSON of Points on the board
+   * @param points
+   */
   drawBoard(points) {
     let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
     let ctx = c.getContext('2d');
@@ -151,6 +159,11 @@ export class GameComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Registers a Click
+   * Forwards the Click Location and the Current Color to the Backend
+   * @param event
+   */
   getMousePosition(event) {
     if (this.zoom === 1 && this.userService.user.type === 1) {
       let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
@@ -162,11 +175,27 @@ export class GameComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Triggers the InputField for Guesses
+   * Also Triggers the Field for Painters
+   */
   showInput() {
     this.inputShown = !this.inputShown;
   }
 
+  /**
+   * Triggers the ColorPalette, to allow for DifferentColors
+   */
   showColorPalette() {
+    this.colorsShown = !this.colorsShown;
+  }
+
+  /**
+   * Changes the colors of the player
+   * @param color
+   */
+  setColor(color) {
+    this.userService.user.color = this.colors[color];
     this.colorsShown = !this.colorsShown;
   }
 
