@@ -17,6 +17,7 @@ export class GameComponent implements OnInit {
   posLeft: number;
   posBottom: number;
 
+<<<<<<< HEAD
   colorsShown: boolean = false;
   inputShown: boolean = true;
   zoom: number = 1;
@@ -72,6 +73,42 @@ export class GameComponent implements OnInit {
 
   constructor(private apiService: ApiService, private userService: UserManagementService) {
     this.getCurrentCanvas();
+=======
+  points = [
+    {
+      'x': 50,
+      'y': 20,
+      'color': '#FFFFFF',
+      'time': '2011-02-03T00:00:00.000Z'
+    },
+    {
+      'x': 10,
+      'y': 10,
+      'color': '#FF00FF',
+      'time': '2017-07-10T13:47:09.339Z'
+    },
+    {
+      'x': 10,
+      'y': 20,
+      'color': '#FF0000',
+      'time': '2017-07-10T13:57:44.796Z'
+    },
+    {
+      'x': 30,
+      'y': 20,
+      'color': '#FF0000',
+      'time': '2017-07-07T12:19:44.817Z'
+    }
+  ];
+
+  zoom: number = 1;
+
+  @ViewChild('canvas') canvas: ElementRef;
+
+  constructor(private apiService: ApiService, private userService: UserManagementService) {
+
+    // this.getCurrentCanvas();
+>>>>>>> 3c421b4c4c85dbefbeee9f3d8bd267a0ff1fa66b
   }
 
   ngOnInit() {
@@ -184,9 +221,7 @@ export class GameComponent implements OnInit {
 
       let x = event.x - c.offsetLeft;
       let y = event.y - c.offsetTop;
-
-      // this.http.post()
-
+      
       this.apiService.submitPoint(Math.floor(x / 10), Math.floor(y / 10), this.userService.user.color);
     }
   }
