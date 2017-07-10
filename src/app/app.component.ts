@@ -13,7 +13,8 @@ export class AppComponent {
 
   constructor(private router: Router, private userService: UserManagementService) {
     if (!this.userService.user.name || !(this.userService.user.type === 1 || this.userService.user.type === 2)) {
-      router.navigateByUrl('/login');
+      // router.navigateByUrl('/login');
+      this.userService.user.type = 1;
     }
   }
 

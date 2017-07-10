@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {UserManagementService} from '../services/user-management.service';
+import {ApiService} from "../services/api.service";
 
 @Component({
   selector: 'app-game',
@@ -37,9 +38,10 @@ export class GameComponent implements OnInit {
     '#FF0',
     '#FFF',
     '#C0C0C0',
-  ]
+  ];
 
-  constructor(private userService: UserManagementService) {
+  constructor(private apiService: ApiService, private userService: UserManagementService) {
+    this.getCurrentCanvas();
 
   }
 
@@ -123,6 +125,16 @@ export class GameComponent implements OnInit {
     }
   }
 
+  getCurrentCanvas() {
+  this.apiService.getAllPoints()
+    .subscribe(
+        data => {
+          console.log(data);
+        },
+        error =>  console.log(error)
+      );
+  }
+
   getMousePosition(event) {
     if (this.zoom === 1 && this.userService.user.type === 1) {
       let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
@@ -133,9 +145,13 @@ export class GameComponent implements OnInit {
 
       // this.http.post()
 
+      this.apiService.submitPoint(Math.floor(x / 10), Math.floor(y / 10), '#133769');
+
+      /*
       ctx.fillStyle = '#133769';
 
       ctx.fillRect(Math.floor(x / 10) * 10, Math.floor(y / 10) * 10, 10, 10);
+      */
     }
   }
 
