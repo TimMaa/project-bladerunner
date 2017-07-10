@@ -20,7 +20,7 @@
     "@angular/flex-layout": "^2.0.0-beta.8",
     "@angular/forms": "^4.0.0",
     "@angular/http": "^4.0.0",
-    "@angular/material": "^2.0.0-beta.7",
+    "@angular/material": "2.0.0-beta.7",
     "@angular/platform-browser": "^4.0.0",
     "@angular/platform-browser-dynamic": "^4.0.0",
     "@angular/router": "^4.0.0",
@@ -33,12 +33,11 @@
     "morgan": "^1.8.2",
     "rx": "^4.1.0",
     "rxjs": "^5.1.0",
-    "socket.io": "^2.0.3",
     "validator": "^7.2.0",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {
-    "@angular/cli": "1.0.3",
+    "@angular/cli": "^1.0.3",
     "@angular/compiler-cli": "^4.0.0",
     "@types/jasmine": "2.5.38",
     "@types/node": "~6.0.60",
