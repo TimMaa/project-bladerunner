@@ -60,7 +60,7 @@ export class GameComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.getCurrentCanvas();
+    // this.getCurrentCanvas();
   }
 
   changeZoom() {
