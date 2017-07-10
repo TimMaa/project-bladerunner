@@ -42,6 +42,30 @@ export class ApiService {
     return Observable.throw(errMsg);
   }
 
+  getAllPoints() {
+    return this.http.get(this.baseUrl + 'points/')
+      .map(this.extractText)
+      .catch(this.handleError);
+  }
+
+  submitPoint(x: number, y: number, color: string ) {
+    let info = {
+      x: x,
+      y: y,
+      color: color
+    };
+
+    return this.http.post(this.baseUrl + 'points/', info)
+      .map(this.extractText)
+      .catch(this.handleError);
+  }
+
+  submitSolution(solution: string) {
+    return this.http.get(this.baseUrl + 'solution/' + solution)
+      .map(this.extractText)
+      .catch(this.handleError);
+  }
+
   // get Response from API-Base
   getBase() {
     return this.http.get(this.baseUrl)
