@@ -10,6 +10,7 @@
  * POST | /points/ | SETS POINT        | JSON-> Parameters x,y,color
  * GET  |/solution/| COMPARES SOLUTION | URL Parameter  /solution/:solution -> Guess
  * GET  |  /       | TESTS API         | NONE
+ * GET  | /words/  | GET ACTUAL WORD   | NONE
  */
 
 const express = require('express');
@@ -49,6 +50,8 @@ router.get('/points/', (req, res) => {
  * Endpoint to set new Points
  *
  * Require JSON Object with x,y,color
+ *
+ * TODO BROADCASTEN DES NEUEN PUNKTES
  */
 router.post('/points/', (req, res) => {
   if (req.body) {
@@ -59,7 +62,8 @@ router.post('/points/', (req, res) => {
 
     if (x && y && color) {
       data.setPoint(x, y, color).subscribe(
-        ()=>{},
+        () => {
+        },
         err => {
           res.status(400);
           res.send(err);
@@ -89,6 +93,20 @@ router.get('/solution/:solution', (req, res) => {
   data.getSolution(solution, data => {
     res.status(data === null ? 400 : 200);
     res.send(data);
+  });
+});
+
+/**
+ * GET | GETS THE ACTUAL WORD
+ */
+router.get('/word', (req, res) => {
+  let solution = req.params.solution;
+  data.getWord().subscribe(data => {
+    res.status(data === null ? 400 : 200);
+    res.send(data[0].word);
+  }, err => {
+    res.status(500);
+    res.send(err)
   });
 });
 

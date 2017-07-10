@@ -14,14 +14,53 @@ const cassandra = require('cassandra-driver');
 const client = new cassandra.Client({contactPoints: contactPoints, keyspace: keySpace});
 const validator = require('validator');
 
+const fs = require('fs');
+
+/**
+ * true when the Database should be created
+ * @type {boolean}
+ */
+const INITIALIZATION_OF_WORDS = true;
 
 /**
  * Number of Words in Database
  * @type {number}
  */
-const wordCount = 3;
+var wordCount;
+/**
+ * CSV file of the Wordlist
+ * @type {string}
+ */
+const csvFile = "server/model/words.csv";
+initWords();
 
-
+/**
+ * Initialization of the wordlist
+ */
+function initWords() {
+  if (INITIALIZATION_OF_WORDS) {
+    fs.readFile(csvFile, "utf8", (err, data) => {
+      let words = data.split(';');
+      wordCount = words.length;
+      shuffle(words);
+      for (var i = 0; i < words.length - 1; i++) {
+        let query = "INSERT INTO words(wordno,word) values (" + i + ",'" + words[i] + "')";
+        exports.doQuery(query).subscribe(() => {
+        }, (err) => console.log("Fehler:" + err));
+      }
+    });
+  }
+}
+/**
+ * Shuffels an Array
+ * @param a array
+ */
+function shuffle(a) {
+  for (let i = a.length; i; i--) {
+    let j = Math.floor(Math.random() * i);
+    [a[i - 1], a[j]] = [a[j], a[i - 1]];
+  }
+}
 
 var exports = module.exports = {};
 
@@ -44,12 +83,13 @@ function checkValues(x, y, color) {
   }
   return true;
 }
+
 /**
  * Starts a query on the Database
  * @param query Query to execute
  * @returns {*} Observable
  */
-exports.doQuery =  function(query) {
+exports.doQuery = function (query) {
   return Rx.Observable.create(observer => {
     client.execute(query, {prepare: true}, function (err, result) {
       if (!err && result.rows !== undefined) {
@@ -59,9 +99,9 @@ exports.doQuery =  function(query) {
         } else {
           observer.error("No items");
         }
-      } else if(err){
+      } else if (err) {
         observer.error(err);
-      }else observer.complete();
+      } else observer.complete();
     });
   });
 }
@@ -74,6 +114,8 @@ function getWordPositionByTime() {
   let time = Date.now();
   return Math.floor(Math.floor(time / 1000) / 300) % wordCount;
 };
+
+
 /**
  * Alle Punkte werden zurückgegeben
  *
@@ -118,6 +160,11 @@ exports.setPoint = function (x, y, color) {
   }
 }
 
+exports.getWord = function () {
+  let query = "SELECT word from words WHERE wordno = " + getWordPositionByTime();
+  return exports.doQuery(query);
+}
+
 /**
  * Punkt wird gelöscht
  * @param x X Koordinate
@@ -138,13 +185,10 @@ exports.deletePoint = function (x, y) {
  * @param callback Callback(boolean) -> True guess is correct; False guess is incorrect.
  */
 exports.getSolution = function (loesung, callback) {
-  let query = "SELECT word from words WHERE wordno = " + getWordPositionByTime();
-  let erg = exports.doQuery(query);
+  let erg = exports.getWord();
 
   erg.subscribe(data => {
       callback(data[0].word === loesung);
     }
     , err => callback(null));
-
-
 }
