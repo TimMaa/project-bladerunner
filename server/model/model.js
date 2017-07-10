@@ -45,7 +45,6 @@ function initWords() {
       shuffle(words);
       for (var i = 0; i < words.length - 1; i++) {
         let query = "INSERT INTO words(wordno,word) values (" + i + ",'" + words[i] + "')";
-        console.log(query);
         exports.doQuery(query).subscribe(() => {
         }, (err) => console.log("Fehler:" + err));
       }
