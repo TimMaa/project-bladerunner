@@ -1,26 +1,54 @@
 <div *ngIf="posTop < 0 && zoom == 1"
      style="width: 100%; height: 30px; top: 0;"
-     class="arrowDiv material-icons" (mousemove)="moveWindow(1)">keyboard_arrow_up</div>
+     class="arrowDiv material-icons" (mousemove)="moveWindow(1)">keyboard_arrow_up
+</div>
 <div *ngIf="posRight > 0 && zoom == 1"
      style="height: 100%; width: 30px; right: 0;"
-     class="arrowDiv material-icons" (mousemove)="moveWindow(2)">keyboard_arrow_right</div>
+     class="arrowDiv material-icons" (mousemove)="moveWindow(2)">keyboard_arrow_right
+</div>
 <div *ngIf="posBottom > 0 && zoom == 1"
      style="width: 100%; height: 30px; bottom: 0;"
-     class="arrowDiv material-icons" (mousemove)="moveWindow(3)">keyboard_arrow_down</div>
+     class="arrowDiv material-icons" (mousemove)="moveWindow(3)">keyboard_arrow_down
+</div>
 <div *ngIf="posLeft < 0 && zoom == 1"
      style="height: 100%; width: 30px; left: 0;"
-     class="arrowDiv material-icons" (mousemove)="moveWindow(4)">keyboard_arrow_left</div>
+     class="arrowDiv material-icons" (mousemove)="moveWindow(4)">keyboard_arrow_left
+</div>
+
+<div class="topButtons" fxLayoutAlign="space-between center">
+  <button md-fab class="menuButton" (click)="changeZoom()">
+    <i *ngIf="zoom == 1;else not_zoomed" class="material-icons">zoom_out</i>
+    <ng-template #not_zoomed>
+      <i class="material-icons">zoom_in</i>
+    </ng-template>
+  </button>
+  <div fxFlex="50" *ngIf="inputShown">
+    <input class="zoomInput" *ngIf="userService.user.type === 1 && zoom !== 1" placeholder="Paint this" disabled>
+    <input class="zoomInput" *ngIf="userService.user.type === 2 && zoom !== 1" placeholder="Enter guess here">
+    <input class="normalInput" *ngIf="userService.user.type === 1 && zoom === 1" placeholder="Paint this" disabled>
+    <input class="normalInput" *ngIf="userService.user.type === 2 && zoom === 1" placeholder="Enter guess here">
+  </div>
+  <button md-fab class="menuButton" routerLink="/home" id="homeButton">
+    <i class="material-icons">home</i>
+  </button>
+</div>
 
 <canvas width="{{canvasWidth}}" height="{{canvasHeight}}" id="gameCanvas" (click)="getMousePosition($event)"
         [style.top.px]="posTop" [style.left.px]="posLeft" [style.zoom]="zoom"></canvas>
 
-<button md-fab routerLink="/home" id="homeButton">
-  <i class="material-icons">home</i>
-</button>
-<button md-fab id="imageDataButton" (click)="changeZoom()">
-  <i *ngIf="zoom == 1;else not_zoomed" class="material-icons">zoom_out</i>
-  <ng-template #not_zoomed>
-    <i class="material-icons">zoom_in</i>
-  </ng-template>
-</button>
+<div *ngIf="colorsShown" id="colorPalette">
+  <md-grid-list cols="4">
+    <md-grid-tile *ngFor="let color of colors">
+        <button class="colorButton" [style.color]="color" [style.background-color]="color">#</button>
+    </md-grid-tile>
+  </md-grid-list>
+</div>
 
+<div class="bottomButtons" fxLayout="row" fxLayoutAlign="space-around center">
+  <button md-fab class="menuButton" (click)="showColorPalette()">
+    <i class="material-icons">color_lens</i>
+  </button>
+  <button md-fab class="menuButton" (click)="showInput()">
+    <i class="material-icons">input</i>
+  </button>
+</div>

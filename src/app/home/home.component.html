@@ -27,7 +27,7 @@
         <table class="homeDisplayTable">
           <tr>
             <th>Name</th>
-            <th>Highscore</th>
+            <th>All-Time Guessed Words</th>
           </tr>
           <tr *ngFor="let friend of friends">
             <td>{{friend.name}}</td>
@@ -45,7 +45,7 @@
     <md-card>
       <md-card-header>
         <md-card-title>
-          Battles
+          Last Games
         </md-card-title>
         <md-card-subtitle>
           Look at your previous Rounds!
@@ -56,7 +56,7 @@
           <tr>
             <th>Start</th>
             <th>End</th>
-            <th>Highscore</th>
+            <th>Guessed Words</th>
           </tr>
           <tr *ngFor="let battle of previousBattles">
             <td>{{battle.start | date:'dd.MM HH:mm'}}</td>
@@ -75,40 +75,31 @@
     <md-card>
       <md-card-header>
         <md-card-title>
-          Profile
+          Premium
         </md-card-title>
         <md-card-subtitle>
-          Style your Kingdom!
+          Get better colors!
         </md-card-subtitle>
       </md-card-header>
       <md-card-content>
         <table class="homeDisplayTable">
           <tr>
-            <td>
-              <label>Username:</label>
-            </td>
-            <td>
-              <span>{{username}}</span>
-            </td>
+            <th>
+              ColorPack
+            </th>
+            <th>
+              Price
+            </th>
           </tr>
-          <tr>
+          <tr *ngFor="let color of colors">
             <td>
-              <label>Armycolor:</label>
+              {{color.name}}
             </td>
             <td>
-              <span>{{armyColor}}</span>
-              <span
-                [style.color]="armyColor"
-                [style.background-color]="armyColor">
-                ##</span>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <label>Password:</label>
+              {{color.price | currency:'EUR':1}}
             </td>
             <td>
-              <span>{{password}}</span>
+              <button md-button>Buy</button>
             </td>
           </tr>
         </table>
