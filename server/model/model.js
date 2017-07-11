@@ -97,7 +97,7 @@ exports.doQuery = function (query) {
           let data = result.rows;
           observer.next(data);
         } else {
-          observer.error("No items");
+          observer.next({});
         }
       } else if (err) {
         observer.error(err);
