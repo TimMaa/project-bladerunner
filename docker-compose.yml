@@ -1,8 +1,7 @@
 version: '2'
 
 services:
-    seed:
-        container_name: cassandra_seed
+    cassandra_seed:
         image: cassandra:3
         restart: always
 
