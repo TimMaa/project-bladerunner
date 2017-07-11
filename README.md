@@ -42,3 +42,7 @@ And especially not E2E
 `cd /nchan
 docker-compose build
 docker run --name <your_beautiful_other_name_here> -d -p "0.0.0.0:9080:9080" <the_composed_image_name_here>:latet`
+
+## How to send publish POSTS to clients
+
+Please send your POST requests to http://nginx_lb:1080/pub
