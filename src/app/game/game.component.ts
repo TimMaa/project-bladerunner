@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, AfterViewInit, ElementRef, ViewChild} from '@angular/core';
+import {ApiService} from '../services/api.service';
 import {UserManagementService} from '../services/user-management.service';
 
 @Component({
@@ -6,7 +7,7 @@ import {UserManagementService} from '../services/user-management.service';
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, AfterViewInit {
 
   canvasWidth: number;
   canvasHeight: number;
@@ -16,8 +17,10 @@ export class GameComponent implements OnInit {
   posLeft: number;
   posBottom: number;
 
+  currentWord: string;
   colorsShown: boolean = false;
   inputShown: boolean = true;
+  guessedSolution: string;
   zoom: number = 1;
 
   colors: string[] = [
@@ -37,23 +40,29 @@ export class GameComponent implements OnInit {
     '#FF0',
     '#FFF',
     '#C0C0C0',
-  ]
+  ];
 
-  constructor(private userService: UserManagementService) {
+  @ViewChild('canvas') canvas: ElementRef;
 
+  constructor(private apiService: ApiService, private userService: UserManagementService) {
   }
 
+  /**
+   * Set Canvas Starting Position (Top, Left) and Canvas Dimension (Height and Width) on Init
+   * Right and Bottom are for scrolling
+   */
   ngOnInit() {
-    /**
-     * Set Canvas Starting Position (Top, Left) and Canvas Dimension (Height and Width) on Init
-     * Right and Bottom are for scrolling
-     */
     this.posTop = 0;
     this.posLeft = 0;
     this.canvasHeight = 2000;
     this.canvasWidth = 2000;
     this.posRight = this.canvasWidth - window.innerWidth + this.posLeft;
     this.posBottom = this.canvasHeight - window.innerHeight + this.posTop;
+    this.getCurrentWord();
+  }
+
+  ngAfterViewInit() {
+    this.getCurrentCanvas();
   }
 
   changeZoom() {
@@ -123,28 +132,91 @@ export class GameComponent implements OnInit {
     }
   }
 
+  /**
+   * Gets all the points and draws them
+   * Only used when opening the GameComponent
+   */
+  getCurrentCanvas() {
+    this.apiService.getAllPoints()
+      .subscribe(
+        data => {
+          this.drawBoard(data);
+        },
+        error => console.log(error)
+      );
+  }
+
+  /**
+   * Draws a JSON of Points on the board
+   * @param points
+   */
+  drawBoard(points) {
+    let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
+    let ctx = c.getContext('2d');
+
+    for (let point of points) {
+      ctx.fillStyle = point.color;
+      ctx.fillRect(point.x * 10, point.y * 10, 10, 10);
+    }
+  }
+
+  /**
+   * Registers a Click
+   * Forwards the Click Location and the Current Color to the Backend
+   * @param event
+   */
   getMousePosition(event) {
     if (this.zoom === 1 && this.userService.user.type === 1) {
       let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
-      let ctx = c.getContext('2d');
 
       let x = event.x - c.offsetLeft;
       let y = event.y - c.offsetTop;
 
-      // this.http.post()
-
-      ctx.fillStyle = '#133769';
-
-      ctx.fillRect(Math.floor(x / 10) * 10, Math.floor(y / 10) * 10, 10, 10);
+      this.apiService.submitPoint(Math.floor(x / 10), Math.floor(y / 10), this.userService.user.color);
     }
   }
 
+  /**
+   * Triggers the InputField for Guesses
+   * Also Triggers the Field for Painters
+   */
   showInput() {
     this.inputShown = !this.inputShown;
   }
 
+  /**
+   * Triggers the ColorPalette, to allow for DifferentColors
+   */
   showColorPalette() {
     this.colorsShown = !this.colorsShown;
   }
 
+  /**
+   * Changes the colors of the player
+   * @param color
+   */
+  setColor(color) {
+    this.userService.user.color = this.colors[color];
+    this.colorsShown = !this.colorsShown;
+  }
+
+  submitSolution() {
+    if (this.guessedSolution) {
+      this.apiService.submitSolution(this.guessedSolution)
+        .subscribe(
+          data => console.log(data)
+        );
+    }
+  }
+
+  getCurrentWord() {
+    this.apiService.getWord()
+      .subscribe(
+        data => {
+          this.currentWord = data;
+        },
+        error => console.log(error)
+      );
+    ;
+  }
 }
