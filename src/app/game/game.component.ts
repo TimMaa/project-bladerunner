@@ -17,6 +17,7 @@ export class GameComponent implements OnInit, AfterViewInit {
   posLeft: number;
   posBottom: number;
 
+  currentWord: string;
   colorsShown: boolean = false;
   inputShown: boolean = true;
   guessedSolution: string;
@@ -57,6 +58,7 @@ export class GameComponent implements OnInit, AfterViewInit {
     this.canvasWidth = 2000;
     this.posRight = this.canvasWidth - window.innerWidth + this.posLeft;
     this.posBottom = this.canvasHeight - window.innerHeight + this.posTop;
+    this.getCurrentWord();
   }
 
   ngAfterViewInit() {
@@ -199,7 +201,22 @@ export class GameComponent implements OnInit, AfterViewInit {
   }
 
   submitSolution() {
-    this.apiService.submitSolution(this.guessedSolution);
+    if (this.guessedSolution) {
+      this.apiService.submitSolution(this.guessedSolution)
+        .subscribe(
+          data => console.log(data)
+        );
+    }
   }
 
+  getCurrentWord() {
+    this.apiService.getWord()
+      .subscribe(
+        data => {
+          this.currentWord = data;
+        },
+        error => console.log(error)
+      );
+    ;
+  }
 }

@@ -30,13 +30,13 @@
   </button>
   <div fxFlex="50" *ngIf="inputShown">
     <input class="zoomInput" *ngIf="userService.user.type === 1 && zoom !== 1"
-           placeholder="Paint this" disabled>
+           placeholder="Paint this" disabled [(ngModel)]="currentWord">
     <input class="zoomInput" *ngIf="userService.user.type === 2 && zoom !== 1"
-           placeholder="Enter guess here" (keydown)="submitSolution()" [(ngModel)]="guessedSolution">
+           placeholder="Enter guess here" (keyup)="submitSolution()" [(ngModel)]="guessedSolution">
     <input class="normalInput" *ngIf="userService.user.type === 1 && zoom === 1"
-           placeholder="Paint this" disabled>
+           placeholder="Paint this" disabled [(ngModel)]="currentWord">
     <input class="normalInput" *ngIf="userService.user.type === 2 && zoom === 1"
-           placeholder="Enter guess here" (keydown)="submitSolution()" [(ngModel)]="guessedSolution">
+           placeholder="Enter guess here" (keyup)="submitSolution()" [(ngModel)]="guessedSolution">
   </div>
   <button md-fab class="menuButton" routerLink="/home" id="homeButton">
     <i class="material-icons">home</i>

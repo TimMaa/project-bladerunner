@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 
-import {Http, Response} from '@angular/http';
+import {Http, RequestOptions, Response, Headers} from '@angular/http';
 
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
@@ -11,6 +11,7 @@ export class ApiService {
 
   // Default API-Url
   baseUrl: string = 'api/';
+  options = new RequestOptions({headers: new Headers({ 'Content-Type': 'application/json' }) });
 
   constructor(private http: Http) {
   }
@@ -18,7 +19,7 @@ export class ApiService {
   // If Response is a JSON, use this
   private extractJson(res: Response) {
     let body = res.json();
-    return body.data || {};
+    return body || {};
   }
 
   // If Response is plain Text, use this
@@ -50,18 +51,27 @@ export class ApiService {
 
   submitPoint(x: number, y: number, color: string ) {
     let info = {
-      x: x,
-      y: y,
-      color: color
+       x,
+       y,
+      color
     };
 
-    return this.http.post(this.baseUrl + 'points/', info)
+    console.log(info);
+
+    this.http.post(this.baseUrl + 'points/', info, this.options)
       .map(this.extractText)
-      .catch(this.handleError);
+      .catch(this.handleError)
+      .subscribe();
   }
 
   submitSolution(solution: string) {
     return this.http.get(this.baseUrl + 'solution/' + solution)
+      .map(this.extractText)
+      .catch(this.handleError);
+  }
+
+  getWord() {
+    return this.http.get(this.baseUrl + 'word/')
       .map(this.extractText)
       .catch(this.handleError);
   }
