@@ -1,6 +1,0 @@
-version: '2'
-services:
-  nchan:
-    build: .
-    ports:
-     - "9080:9080"
