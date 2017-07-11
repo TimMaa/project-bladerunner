@@ -1,8 +1,7 @@
 version: '2'
 
 services:
-    seed:
-        container_name: cassandra_seed
+    cassandra_seed:
         image: cassandra:3
         restart: always
 
@@ -21,7 +20,26 @@ services:
     usecase:
         image: bladerunner
         restart: always
-        ports:
-          - "3000:3000"
         environment:
+          - SERVICE_NAME=app
+          - SERVICE_TAGS=production
           - CASSANDRA=cassandra_seed
+
+    nginx_lb:
+        image: nginx-lb-cassandra
+        depends_on:
+          - usecase
+        ports:
+          - "80:80"
+
+    consul:
+        image: gliderlabs/consul-server:latest
+        command: -bootstrap
+        
+    registrator:
+        image: gliderlabs/registrator:master
+        depends_on:
+          - consul
+        command: -internal -resync 600 consul://consul:8500
+        volumes:
+          - "/var/run/docker.sock:/tmp/docker.sock"
