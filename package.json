@@ -29,6 +29,7 @@
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
     "express": "^4.15.3",
+    "fs": "0.0.1-security",
     "htmlspecialchars": "^1.0.5",
     "morgan": "^1.8.2",
     "rx": "^4.1.0",
