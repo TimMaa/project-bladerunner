@@ -5,6 +5,9 @@ const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
 const socketSetup = require('./server/sockets/init.js')
+const consul = require('consul')({
+  host: process.env.CONSUL ? process.env.CONSUL : undefined
+});
 
 // Get our API routes
 const api = require('./server/routes/api');
@@ -38,6 +41,43 @@ const server = http.createServer(app);
 
 // Setup Sockets.io
 socketSetup(server);
+
+// Consul Lock
+const lock = consul.lock({ key: '' });
+var interval = undefined;
+
+lock.on('acquire', function() {
+  if (interval) {
+    clearInterval(interval);
+    interval = undefined;
+  }
+  interval = setInterval(function() {
+    /* Do your logic here */
+  }, 5 * 60 * 1000);
+});
+
+lock.on('release', function() {
+  if (interval) {
+    clearInterval(interval);
+    interval = undefined;
+  }
+});
+
+lock.on('error', function() {
+  if (interval) {
+    clearInterval(interval);
+    interval = undefined;
+  }
+});
+
+lock.on('end', function(err) {
+  if (interval) {
+    clearInterval(interval);
+    interval = undefined;
+  }
+});
+
+lock.acquire();
 
 /**
  * Listen on provided port, on all network interfaces.
