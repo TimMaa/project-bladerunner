@@ -15,7 +15,6 @@
 
 const express = require('express');
 const router = express.Router();
-const pointBroadcast = require('../sockets/points.js');
 
 
 /**
@@ -28,7 +27,6 @@ const data = require('../model/model');
  */
 router.get('/', (req, res) => {
   res.send('api works');
-  pointBroadcast(1,2,3);
 });
 
 /**
