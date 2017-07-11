@@ -40,7 +40,8 @@ router.get('/points/', (req, res) => {
     data => {
       res.status(200);
       res.send(data);
-    }
+    },
+    err => console.log("FEHLER", err)
   )
 });
 
