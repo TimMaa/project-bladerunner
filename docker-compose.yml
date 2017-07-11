@@ -24,6 +24,8 @@ services:
           - SERVICE_NAME=app
           - SERVICE_TAGS=production
           - CASSANDRA=cassandra_seed
+          - CONSUL=consul
+          - "PUBLISHER=http://nginx_lb:1080/pub"
 
     nginx_lb:
         image: nginx-lb-cassandra
