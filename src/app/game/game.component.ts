@@ -65,7 +65,16 @@ export class GameComponent implements OnInit, AfterViewInit {
     this.posBottom = this.canvasHeight - window.innerHeight + this.posTop;
 
     this.socket.subscribe(
-      message => console.log(message)
+      message => {
+        let event = JSON.parse(message);
+        if (event.type === 'POINT_UPDATE_EVENT') {
+          this.drawBoard(event.data);
+        } else if (event.type === 'WORD_UPDATE_EVENT') {
+          this.currentWord = event.data;
+          this.clearCanvas();
+          this.getCurrentCanvas();
+        }
+      }
     );
   }
 
@@ -152,6 +161,13 @@ export class GameComponent implements OnInit, AfterViewInit {
         },
         error => console.log(error)
       );
+  }
+
+  clearCanvas() {
+    let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
+    let ctx = c.getContext('2d');
+
+    ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
   }
 
   /**
