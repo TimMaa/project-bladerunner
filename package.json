@@ -26,6 +26,7 @@
     "@angular/router": "^4.0.0",
     "body-parser": "^1.17.2",
     "cassandra-driver": "^3.2.2",
+    "consul": "^0.29.0",
     "cookie-parser": "^1.4.3",
     "core-js": "^2.4.1",
     "express": "^4.15.3",
