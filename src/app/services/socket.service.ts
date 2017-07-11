@@ -13,7 +13,6 @@ export class SocketService {
         socket.onmessage = observer.next.bind(observer);
         socket.onerror = observer.error.bind(observer);
         socket.onclose = observer.complete.bind(observer);
-        return socket.close.bind(socket);
       }
     );
 

@@ -16,6 +16,8 @@ const validator = require('validator');
 
 const fs = require('fs');
 
+const pointBroadcast = require('../sockets/points.js');
+
 /**
  * true when the Database should be created
  * @type {boolean}
@@ -152,6 +154,7 @@ exports.getPoint = function (x, y) {
 exports.setPoint = function (x, y, color) {
   if (checkValues(x, y, color)) {
     let query = "INSERT INTO coordinates(x,y,color,time) values (" + x + "," + y + ",'" + color + "', toTimestamp(now()));";
+    pointBroadcast(x ,y,color);
     return exports.doQuery(query);
   } else {
     return Rx.Observable.create(observer => {

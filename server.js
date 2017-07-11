@@ -4,7 +4,6 @@ const app = express();
 const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
-const socketSetup = require('./server/sockets/init.js')
 
 // Get our API routes
 const api = require('./server/routes/api');
@@ -36,11 +35,7 @@ app.set('port', port);
  */
 const server = http.createServer(app);
 
-// Setup Sockets.io
-socketSetup(server);
-
 /**
  * Listen on provided port, on all network interfaces.
  */
 server.listen(port, () => console.log(`API running on localhost:${port}`));
-
