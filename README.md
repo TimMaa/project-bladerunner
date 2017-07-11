@@ -1,5 +1,8 @@
 # Life of Game (or something else that resembles much writes and reads)
 
+docker run -ti -d --name=consul gliderlabs/consul-server:latest -bootstrap
+docker run -ti -d -p 80:80 -p 1080:1080 --link=consul nginx-lb-cassandra
+
 Did you ever feel lost in life?  
 Did you ever think noone liked you?  
 Did you ever need a database that could read and write super fast?  

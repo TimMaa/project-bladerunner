@@ -13,6 +13,7 @@ import {GameComponent} from './game/game.component';
 import {routing} from './app.routing';
 import {UserManagementService} from './services/user-management.service';
 import {ApiService} from './services/api.service';
+import {SocketService} from "./services/socket.service";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {ApiService} from './services/api.service';
   ],
   providers: [
     ApiService,
-    UserManagementService
+    UserManagementService,
+    SocketService
   ],
   bootstrap: [AppComponent]
 })

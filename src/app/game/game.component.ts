@@ -1,6 +1,7 @@
 import {Component, OnInit, AfterViewInit, ElementRef, ViewChild} from '@angular/core';
 import {ApiService} from '../services/api.service';
 import {UserManagementService} from '../services/user-management.service';
+import {SocketService} from '../services/socket.service';
 
 @Component({
   selector: 'app-game',
@@ -8,6 +9,8 @@ import {UserManagementService} from '../services/user-management.service';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit, AfterViewInit {
+
+  socket;
 
   canvasWidth: number;
   canvasHeight: number;
@@ -44,7 +47,9 @@ export class GameComponent implements OnInit, AfterViewInit {
 
   @ViewChild('canvas') canvas: ElementRef;
 
-  constructor(private apiService: ApiService, private userService: UserManagementService) {
+  constructor(private apiService: ApiService, private userService: UserManagementService, private socketService: SocketService) {
+    this.socket = socketService.createWebsocket();
+    this.getCurrentWord();
   }
 
   /**
@@ -58,7 +63,10 @@ export class GameComponent implements OnInit, AfterViewInit {
     this.canvasWidth = 2000;
     this.posRight = this.canvasWidth - window.innerWidth + this.posLeft;
     this.posBottom = this.canvasHeight - window.innerHeight + this.posTop;
-    this.getCurrentWord();
+
+    this.socket.subscribe(
+      message => console.log(message)
+    );
   }
 
   ngAfterViewInit() {
