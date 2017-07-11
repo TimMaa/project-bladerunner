@@ -1,3 +1,6 @@
+<!--
+  Used for Scrolling on the page
+-->
 <div *ngIf="posTop < 0 && zoom == 1"
      style="width: 100%; height: 30px; top: 0;"
      class="arrowDiv material-icons" (mousemove)="moveWindow(1)">keyboard_arrow_up
@@ -15,6 +18,9 @@
      class="arrowDiv material-icons" (mousemove)="moveWindow(4)">keyboard_arrow_left
 </div>
 
+<!--
+  Orders the buttons on the top
+-->
 <div class="topButtons" fxLayoutAlign="space-between center">
   <button md-fab class="menuButton" (click)="changeZoom()">
     <i *ngIf="zoom == 1;else not_zoomed" class="material-icons">zoom_out</i>
@@ -37,9 +43,16 @@
   </button>
 </div>
 
+
+<!--
+  Displays the Canvas
+-->
 <canvas #canvas width="{{canvasWidth}}" height="{{canvasHeight}}" id="gameCanvas" (click)="getMousePosition($event)"
         [style.top.px]="posTop" [style.left.px]="posLeft" [style.zoom]="zoom"></canvas>
 
+<!--
+  Generates the Color Palette
+-->
 <div *ngIf="colorsShown" id="colorPalette">
   <md-grid-list cols="4">
     <md-grid-tile *ngFor="let color of colors, let i = index">
@@ -48,8 +61,11 @@
   </md-grid-list>
 </div>
 
+<!--
+  Orders the buttons in the bottom
+-->
 <div class="bottomButtons" fxLayout="row" fxLayoutAlign="space-around center">
-  <button md-fab class="menuButton" (click)="showColorPalette()">
+  <button *ngIf="userService.user.type === 1" md-fab class="menuButton" (click)="showColorPalette()">
     <i class="material-icons">color_lens</i>
   </button>
   <button md-fab class="menuButton" (click)="showInput()">
