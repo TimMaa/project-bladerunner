@@ -38,6 +38,7 @@ exports.changeActiveWord = function () {
   model.doQuery(query).subscribe(
     data => {
           if(data[0]) {
+            let word = data[0].word;
             let newQuery = "INSERT INTO activeword(sessionno, time, word) values (1, toTimestamp(now()),'" + word + "')";
             model.doQuery(newQuery).subscribe(data => console.log(data), err => console.log(err));
             wordBroadcast(word);
