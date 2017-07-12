@@ -1,6 +1,7 @@
 import {Component, OnInit, AfterViewInit, ElementRef, ViewChild} from '@angular/core';
 import {ApiService} from '../services/api.service';
 import {UserManagementService} from '../services/user-management.service';
+import {SocketService} from '../services/socket.service';
 
 @Component({
   selector: 'app-game',
@@ -8,6 +9,8 @@ import {UserManagementService} from '../services/user-management.service';
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit, AfterViewInit {
+
+  socket;
 
   canvasWidth: number;
   canvasHeight: number;
@@ -44,12 +47,15 @@ export class GameComponent implements OnInit, AfterViewInit {
 
   @ViewChild('canvas') canvas: ElementRef;
 
-  constructor(private apiService: ApiService, private userService: UserManagementService) {
+  constructor(private apiService: ApiService, public userService: UserManagementService, private socketService: SocketService) {
+    this.socket = socketService.createWebsocket();
+    this.getCurrentWord();
   }
 
   /**
    * Set Canvas Starting Position (Top, Left) and Canvas Dimension (Height and Width) on Init
    * Right and Bottom are for scrolling
+   * Also generates a Websocket that allows for communication with the backend (see SocketService)
    */
   ngOnInit() {
     this.posTop = 0;
@@ -58,13 +64,32 @@ export class GameComponent implements OnInit, AfterViewInit {
     this.canvasWidth = 2000;
     this.posRight = this.canvasWidth - window.innerWidth + this.posLeft;
     this.posBottom = this.canvasHeight - window.innerHeight + this.posTop;
-    this.getCurrentWord();
+
+    this.socket.subscribe(
+      message => {
+        let event = JSON.parse(message.data);
+        if (event.type === 'POINT_UPDATE_EVENT') {
+          this.drawPoint(event.data);
+        } else if (event.type === 'WORD_UPDATE_EVENT') {
+          this.currentWord = event.data;
+          this.clearCanvas();
+          this.getCurrentCanvas();
+        };
+      }
+    );
   }
 
+  /**
+   * Paints the Canvas after is was rendered
+   */
   ngAfterViewInit() {
     this.getCurrentCanvas();
   }
 
+  /**
+   * Zooms in or out (depending on current state)
+   * Zooms relative to windowsize
+   */
   changeZoom() {
     /**
      * To get an overview of the entire drawing, you can zoom
@@ -87,6 +112,11 @@ export class GameComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Moves the Canvas Up/Right/Down/Left
+   * Is triggered by divs on the edge
+   * @param element
+   */
   moveWindow(element: number) {
     let dh = window.innerHeight;
     let dw = window.innerWidth;
@@ -147,7 +177,31 @@ export class GameComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Draws a JSON of Points on the board
+   * Empties the Canvas
+   * Only used when a new word is to be guessed
+   */
+  clearCanvas() {
+    let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
+    let ctx = c.getContext('2d');
+
+    ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight);
+  }
+
+  /**
+   * Draw a single Point
+   * @param point
+   */
+  drawPoint(point) {
+    let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
+    let ctx = c.getContext('2d');
+
+    ctx.fillStyle = point.color;
+    ctx.fillRect(point.x * 10, point.y * 10, 10, 10);
+  }
+
+  /**
+   * Draws an Array of Points on the board
+   * Is Called when the database is checked
    * @param points
    */
   drawBoard(points) {
@@ -172,6 +226,7 @@ export class GameComponent implements OnInit, AfterViewInit {
       let x = event.x - c.offsetLeft;
       let y = event.y - c.offsetTop;
 
+      this.drawBoard({x: x, y: y, color: this.userService.user.color});
       this.apiService.submitPoint(Math.floor(x / 10), Math.floor(y / 10), this.userService.user.color);
     }
   }
@@ -185,7 +240,7 @@ export class GameComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Triggers the ColorPalette, to allow for DifferentColors
+   * Triggers the ColorPalette, to allow for Different Colors
    */
   showColorPalette() {
     this.colorsShown = !this.colorsShown;
@@ -200,6 +255,9 @@ export class GameComponent implements OnInit, AfterViewInit {
     this.colorsShown = !this.colorsShown;
   }
 
+  /**
+   * Submits the solution to the backend
+   */
   submitSolution() {
     if (this.guessedSolution) {
       this.apiService.submitSolution(this.guessedSolution)
@@ -209,6 +267,11 @@ export class GameComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Gets the current word from the backend
+   * Only used on init
+   * Afterwards the word is transmitted by the websocket
+   */
   getCurrentWord() {
     this.apiService.getWord()
       .subscribe(

@@ -4,7 +4,7 @@ const app = express();
 const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
-const socketSetup = require('./server/sockets/init.js')
+
 const consul = require('consul')({
   host: process.env.CONSUL ? process.env.CONSUL : undefined
 });
@@ -38,9 +38,6 @@ app.set('port', port);
  * Create HTTP server.
  */
 const server = http.createServer(app);
-
-// Setup Sockets.io
-socketSetup(server);
 
 // Consul Lock
 const lock = consul.lock({ key: '' });
@@ -78,9 +75,7 @@ lock.on('end', function(err) {
 });
 
 lock.acquire();
-
 /**
  * Listen on provided port, on all network interfaces.
  */
 server.listen(port, () => console.log(`API running on localhost:${port}`));
-

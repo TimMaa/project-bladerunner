@@ -9,16 +9,16 @@ import {UserManagementService} from './services/user-management.service';
 })
 export class AppComponent {
 
-  loggedIn: boolean = false;
-
-  constructor(private router: Router, private userService: UserManagementService) {
+  /**
+   * Is triggered when the page is first loaded
+   * Navigates the client to login if no name or type is specified
+   * @param router
+   * @param userService
+   */
+  constructor(private router: Router, public userService: UserManagementService) {
     if (!this.userService.user.name || !(this.userService.user.type === 1 || this.userService.user.type === 2)) {
-      // router.navigateByUrl('/login');
-      this.userService.user.type = 1;
+      router.navigateByUrl('/login');
+      // this.userService.user.type = 1;
     }
-  }
-
-  logInPlayer(event: boolean) {
-      this.loggedIn = event;
   }
 }
