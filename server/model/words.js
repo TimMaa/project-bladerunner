@@ -5,7 +5,7 @@
 
 
 let model = require('./model');
-
+const wordBroadcast = require('../sockets/word.js');
 
 var exports = module.exports = {};
 
@@ -40,6 +40,7 @@ exports.changeActiveWord = function () {
           let word = data[0].word;
           let newQuery = "INSERT INTO activeword(sessionno, time, word) values (1, toTimestamp(now()),'" + word + "')";
           model.doQuery(newQuery).subscribe(data=>console.log(data),err=>console.log(err));
+          wordBroadcast(word);
     },
     err => console.log("Fehler",err)
   );
