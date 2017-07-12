@@ -44,7 +44,7 @@ app.set('port', port);
 const server = http.createServer(app);
 
 // Consul Lock
-const lock = consul.lock({ key: '' });
+const lock = consul.lock({ key: 'a' });
 let interval = undefined;
 
 lock.on('acquire', function() {

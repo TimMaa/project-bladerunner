@@ -21,6 +21,7 @@ const router = express.Router();
  * Datamodel
  */
 const data = require('../model/model');
+const word = require('../model/words');
 
 /**
  *  GET | TESTS API
@@ -103,7 +104,7 @@ router.get('/solution/:solution', (req, res) => {
  */
 router.get('/word', (req, res) => {
   let solution = req.params.solution;
-  data.getWord().subscribe(data => {
+  word.getWord().subscribe(data => {
     res.status(data === null ? 400 : 200);
     res.send(data[0].word);
   }, err => {
