@@ -37,10 +37,11 @@ exports.changeActiveWord = function () {
   let query = "SELECT word from words WHERE wordno = "+ getWordPositionByTime();
   model.doQuery(query).subscribe(
     data => {
-          let word = data[0].word;
-          let newQuery = "INSERT INTO activeword(sessionno, time, word) values (1, toTimestamp(now()),'" + word + "')";
-          model.doQuery(newQuery).subscribe(data=>console.log(data),err=>console.log(err));
-          wordBroadcast(word);
+          if(data[0]) {
+            let newQuery = "INSERT INTO activeword(sessionno, time, word) values (1, toTimestamp(now()),'" + word + "')";
+            model.doQuery(newQuery).subscribe(data => console.log(data), err => console.log(err));
+            wordBroadcast(word);
+          }
     },
     err => console.log("Fehler",err)
   );

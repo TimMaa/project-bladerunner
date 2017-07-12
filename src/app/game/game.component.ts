@@ -71,7 +71,7 @@ export class GameComponent implements OnInit, AfterViewInit {
         if (event.type === 'POINT_UPDATE_EVENT') {
           this.drawPoint(event.data);
         } else if (event.type === 'WORD_UPDATE_EVENT') {
-          this.currentWord = event.data;
+          this.currentWord = event.data.word;
           this.clearCanvas();
           this.getCurrentCanvas();
         };
