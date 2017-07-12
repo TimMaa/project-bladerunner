@@ -7,7 +7,9 @@ const client = new cassandra.Client({contactPoints: contactPoints});
 /* STATEMENTS */
 const queries = [
   "CREATE KEYSPACE IF NOT EXISTS gameoflife WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3 } AND DURABLE_WRITES = false",
-  "CREATE TABLE IF NOT EXISTS gameoflife.coordinates (x int, y int, color varchar, time timestamp, PRIMARY KEY (x, y))"
+  "CREATE TABLE IF NOT EXISTS gameoflife.coordinates (x int, y int, color varchar, time timestamp, PRIMARY KEY (x, y))",
+  "CREATE TABLE IF NOT EXISTS gameoflife.words(wordno int, word varchar, isactive boolean, PRIMARY KEY(wordno));",
+  "CREATE TABLE IF NOT EXISTS gameoflife.activeWord(sessionno int , time timestamp, word varchar, PRIMARY KEY(sessionno, time))WITH CLUSTERING ORDER BY (time DESC);"
 ];
 
 
