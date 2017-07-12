@@ -38,7 +38,7 @@ exports.wordCount = 160;
  * CSV file of the Wordlist
  * @type {string}
  */
-const csvFile= "server/model/words.csv";
+const csvFile= "./server/model/words.csv";
 initWords();
 
 /**

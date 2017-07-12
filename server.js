@@ -5,8 +5,8 @@ const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
 
-const model = require('server/model/model');
-const wordModel = require('server/model/words');
+const model = require('./server/model/model');
+const wordModel = require('./server/model/words');
 
 
 const consul = require('consul')({

@@ -7,7 +7,7 @@
 let model = require('./model');
 
 
-let exports = module.exports = {};
+var exports = module.exports = {};
 
 
 /**
