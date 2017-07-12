@@ -8,14 +8,17 @@ import {UserManagementService} from '../services/user-management.service';
 })
 export class LoginComponent implements OnInit {
 
-  isDisabled: boolean = true;
-
-  constructor(private userService: UserManagementService) {
+  constructor(public userService: UserManagementService) {
   }
 
   ngOnInit() {
   }
 
+  /**
+   * Styles the Guesser-Button depending on the choice made
+   * Returns the color
+   * @returns {any}
+   */
   getGColor() {
     if (this.userService.user.type === 2) {
       return 'rgba(194, 194, 194, 1)';
@@ -24,6 +27,11 @@ export class LoginComponent implements OnInit {
     }
   }
 
+  /**
+   * Styles the Painter-Button depending on the choice made
+   * Returns the color
+   * @returns {any}
+   */
   getPColor() {
     if (this.userService.user.type === 1) {
       return 'rgba(194, 194, 194, 1)';
@@ -33,6 +41,11 @@ export class LoginComponent implements OnInit {
 
   }
 
+
+  /**
+   * Enables the Start-Button depending on the choices
+   * @returns {any}
+   */
   enableButton() {
     if (this.userService.user.name && (this.userService.user.type === 1 || this.userService.user.type === 2)) {
       return false;

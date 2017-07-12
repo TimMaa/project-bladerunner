@@ -47,7 +47,7 @@ export class GameComponent implements OnInit, AfterViewInit {
 
   @ViewChild('canvas') canvas: ElementRef;
 
-  constructor(private apiService: ApiService, private userService: UserManagementService, private socketService: SocketService) {
+  constructor(private apiService: ApiService, public userService: UserManagementService, private socketService: SocketService) {
     this.socket = socketService.createWebsocket();
     this.getCurrentWord();
   }
@@ -55,6 +55,7 @@ export class GameComponent implements OnInit, AfterViewInit {
   /**
    * Set Canvas Starting Position (Top, Left) and Canvas Dimension (Height and Width) on Init
    * Right and Bottom are for scrolling
+   * Also generates a Websocket that allows for communication with the backend (see SocketService)
    */
   ngOnInit() {
     this.posTop = 0;
@@ -78,10 +79,17 @@ export class GameComponent implements OnInit, AfterViewInit {
     );
   }
 
+  /**
+   * Paints the Canvas after is was rendered
+   */
   ngAfterViewInit() {
     this.getCurrentCanvas();
   }
 
+  /**
+   * Zooms in or out (depending on current state)
+   * Zooms relative to windowsize
+   */
   changeZoom() {
     /**
      * To get an overview of the entire drawing, you can zoom
@@ -104,6 +112,11 @@ export class GameComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Moves the Canvas Up/Right/Down/Left
+   * Is triggered by divs on the edge
+   * @param element
+   */
   moveWindow(element: number) {
     let dh = window.innerHeight;
     let dw = window.innerWidth;
@@ -163,6 +176,10 @@ export class GameComponent implements OnInit, AfterViewInit {
       );
   }
 
+  /**
+   * Empties the Canvas
+   * Only used when a new word is to be guessed
+   */
   clearCanvas() {
     let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
     let ctx = c.getContext('2d');
@@ -238,6 +255,9 @@ export class GameComponent implements OnInit, AfterViewInit {
     this.colorsShown = !this.colorsShown;
   }
 
+  /**
+   * Submits the solution to the backend
+   */
   submitSolution() {
     if (this.guessedSolution) {
       this.apiService.submitSolution(this.guessedSolution)
@@ -247,6 +267,11 @@ export class GameComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Gets the current word from the backend
+   * Only used on init
+   * Afterwards the word is transmitted by the websocket
+   */
   getCurrentWord() {
     this.apiService.getWord()
       .subscribe(
