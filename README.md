@@ -1,5 +1,8 @@
 # Life of Game (or something else that resembles much writes and reads)
 
+docker run -ti -d --name=consul gliderlabs/consul-server:latest -bootstrap
+docker run -ti -d -p 80:80 -p 1080:1080 --link=consul nginx-lb-cassandra
+
 Did you ever feel lost in life?  
 Did you ever think noone liked you?  
 Did you ever need a database that could read and write super fast?  
@@ -14,7 +17,7 @@ Run `npm start` for a dev Angular server. Navigate to `http://localhost:4200/`.
 The app will automatically reload if you change any of the source files.
 It's also great for just showing it temporarily.
 
-Run `npm run start-express` for a dev Express server.
+Run `PUBLISHER=<nchan_IP_here[most likely 192.168.99.100]> npm run start-express` for a dev Express server.
 
 ## Build
 

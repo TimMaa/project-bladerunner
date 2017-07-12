@@ -56,8 +56,6 @@ export class ApiService {
       color
     };
 
-    console.log(info);
-
     this.http.post(this.baseUrl + 'points/', info, this.options)
       .map(this.extractText)
       .catch(this.handleError)
