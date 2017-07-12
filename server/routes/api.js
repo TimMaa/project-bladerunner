@@ -106,7 +106,9 @@ router.get('/word', (req, res) => {
   let solution = req.params.solution;
   word.getWord().subscribe(data => {
     res.status(data === null ? 400 : 200);
-    res.send(data[0].word);
+    if (data[0]) {
+      res.send(data[0].word);
+    }
   }, err => {
     res.status(500);
     res.send(err)

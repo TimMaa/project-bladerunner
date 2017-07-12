@@ -99,8 +99,8 @@ function checkValues(x, y, color) {
 exports.doQuery = function (query) {
   return Rx.Observable.create(observer => {
     client.execute(query, {prepare: true}, function (err, result) {
-      if (!err && result.rows !== undefined) {
-        if (result.rows.length > 0) {
+      if (!err) {
+        if (result.rows !== undefined && result.rows.length > 0) {
           let data = result.rows;
           observer.next(data);
         } else {

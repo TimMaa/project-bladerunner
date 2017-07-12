@@ -8,7 +8,6 @@ const bodyParser = require('body-parser');
 const model = require('./server/model/model');
 const wordModel = require('./server/model/words');
 
-
 const consul = require('consul')({
   host: process.env.CONSUL ? process.env.CONSUL : undefined
 });
@@ -48,24 +47,29 @@ const lock = consul.lock({ key: 'a' });
 let interval = undefined;
 
 lock.on('acquire', function() {
+  console.log("lock aquired");
   if (interval) {
     clearInterval(interval);
     interval = undefined;
   }
-  interval = setInterval(function() {
-
-    /**
-     * Wird alle 5 Min Ausgeführt
-     */
-
-    /**
-     * DELETION of the coordinates Database
-     */
+  /**
+   * DELETION of the coordinates Database
+   */
+  const intervalFunction = function () {
     model.emptyCoordinates();
     wordModel.changeActiveWord();
+  };
+  /**
+   * Wird beim Start Ausgeführt
+   */
+  intervalFunction();
+  /**
+   * Wird alle 5 Min Ausgeführt
+   */
+  interval = setInterval(function() {
+    intervalFunction();
 
-
-  }, 5 * 60 * 1000);
+  }, 30  * 1000);
 });
 
 lock.on('release', function() {
