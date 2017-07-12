@@ -16,7 +16,7 @@ var exports = module.exports = {};
  */
 
 exports.getWord = function () {
-  let query = "SELECT word from words WHERE wordno = " + getWordPositionByTime();
+  let query = "SELECT word from activeWord LIMIT 1";
   return model.doQuery(query);
 }
 
