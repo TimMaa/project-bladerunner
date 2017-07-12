@@ -5,6 +5,10 @@ const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
 
+const model = require('./server/model/model');
+const wordModel = require('./server/model/words');
+
+
 const consul = require('consul')({
   host: process.env.CONSUL ? process.env.CONSUL : undefined
 });
@@ -40,8 +44,8 @@ app.set('port', port);
 const server = http.createServer(app);
 
 // Consul Lock
-const lock = consul.lock({ key: '' });
-var interval = undefined;
+const lock = consul.lock({ key: 'a' });
+let interval = undefined;
 
 lock.on('acquire', function() {
   if (interval) {
@@ -49,7 +53,18 @@ lock.on('acquire', function() {
     interval = undefined;
   }
   interval = setInterval(function() {
-    /* Do your logic here */
+
+    /**
+     * Wird alle 5 Min Ausgeführt
+     */
+
+    /**
+     * DELETION of the coordinates Database
+     */
+    model.emptyCoordinates();
+    wordModel.changeActiveWord();
+
+
   }, 5 * 60 * 1000);
 });
 

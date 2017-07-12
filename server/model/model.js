@@ -16,7 +16,12 @@ const validator = require('validator');
 
 const fs = require('fs');
 
+
 const pointBroadcast = require('../sockets/points.js');
+
+var exports = module.exports = {};
+
+
 
 /**
  * true when the Database should be created
@@ -28,12 +33,12 @@ const INITIALIZATION_OF_WORDS = true;
  * Number of Words in Database
  * @type {number}
  */
-var wordCount;
+exports.wordCount = 160;
 /**
  * CSV file of the Wordlist
  * @type {string}
  */
-const csvFile = "server/model/words.csv";
+const csvFile= "./server/model/words.csv";
 initWords();
 
 /**
@@ -43,13 +48,15 @@ function initWords() {
   if (INITIALIZATION_OF_WORDS) {
     fs.readFile(csvFile, "utf8", (err, data) => {
       let words = data.split(';');
-      wordCount = words.length;
+      exports.wordCount = words.length;
       shuffle(words);
       for (var i = 0; i < words.length - 1; i++) {
-        let query = "INSERT INTO words(wordno,word) values (" + i + ",'" + words[i] + "')";
+        let query = "INSERT INTO words (wordno,word,isactive) values (" + i + ",'" + words[i] + "' ,false)";
         exports.doQuery(query).subscribe(() => {
         }, (err) => console.log("Fehler:" + err));
       }
+      let query = "UPDATE words SET isactive = true WHERE wordno = 0";
+      exports.doQuery(query).subscribe();
     });
   }
 }
@@ -63,8 +70,6 @@ function shuffle(a) {
     [a[i - 1], a[j]] = [a[j], a[i - 1]];
   }
 }
-
-var exports = module.exports = {};
 
 /**
  * Checks inputs
@@ -107,16 +112,6 @@ exports.doQuery = function (query) {
     });
   });
 }
-
-/**
- * Gets the actual Position of the Gameword
- * @returns {number} Position
- */
-function getWordPositionByTime() {
-  let time = Date.now();
-  return Math.floor(Math.floor(time / 1000) / 300) % wordCount;
-};
-
 
 /**
  * Alle Punkte werden zurückgegeben
@@ -163,10 +158,6 @@ exports.setPoint = function (x, y, color) {
   }
 }
 
-exports.getWord = function () {
-  let query = "SELECT word from words WHERE wordno = " + getWordPositionByTime();
-  return exports.doQuery(query);
-}
 
 /**
  * Punkt wird gelöscht
@@ -180,6 +171,16 @@ exports.deletePoint = function (x, y) {
     return exports.doQuery(query);
   }
 }
+
+
+/**
+ * Empty Table coordinates
+ */
+exports.emptyCoordinates = function () {
+  query = "TRUNCATE coordinates;";
+  exports.doQuery(query).subscribe();
+}
+
 
 /**
  * Compares an guess with the correct answer
@@ -195,3 +196,4 @@ exports.getSolution = function (loesung, callback) {
     }
     , err => callback(null));
 }
+
