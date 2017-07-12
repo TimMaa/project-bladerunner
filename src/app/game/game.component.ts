@@ -66,14 +66,14 @@ export class GameComponent implements OnInit, AfterViewInit {
 
     this.socket.subscribe(
       message => {
-        let event = JSON.parse(message);
+        let event = JSON.parse(message.data);
         if (event.type === 'POINT_UPDATE_EVENT') {
-          this.drawBoard(event.data);
+          this.drawPoint(event.data);
         } else if (event.type === 'WORD_UPDATE_EVENT') {
           this.currentWord = event.data;
           this.clearCanvas();
           this.getCurrentCanvas();
-        }
+        };
       }
     );
   }
@@ -171,7 +171,20 @@ export class GameComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Draws a JSON of Points on the board
+   * Draw a single Point
+   * @param point
+   */
+  drawPoint(point) {
+    let c = (<HTMLCanvasElement>document.getElementById('gameCanvas'));
+    let ctx = c.getContext('2d');
+
+    ctx.fillStyle = point.color;
+    ctx.fillRect(point.x * 10, point.y * 10, 10, 10);
+  }
+
+  /**
+   * Draws an Array of Points on the board
+   * Is Called when the database is checked
    * @param points
    */
   drawBoard(points) {
@@ -196,6 +209,7 @@ export class GameComponent implements OnInit, AfterViewInit {
       let x = event.x - c.offsetLeft;
       let y = event.y - c.offsetTop;
 
+      this.drawBoard({x: x, y: y, color: this.userService.user.color});
       this.apiService.submitPoint(Math.floor(x / 10), Math.floor(y / 10), this.userService.user.color);
     }
   }
@@ -209,7 +223,7 @@ export class GameComponent implements OnInit, AfterViewInit {
   }
 
   /**
-   * Triggers the ColorPalette, to allow for DifferentColors
+   * Triggers the ColorPalette, to allow for Different Colors
    */
   showColorPalette() {
     this.colorsShown = !this.colorsShown;

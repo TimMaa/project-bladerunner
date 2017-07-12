@@ -19,7 +19,7 @@ export class SocketService {
     let observer = {
       next: (data: Object) => {
         if (socket.readyState === WebSocket.OPEN) {
-          socket.send(JSON.stringify(data));
+          socket.send(data);
         }
       }
     };
