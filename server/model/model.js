@@ -14,7 +14,7 @@ const cassandra = require('cassandra-driver');
 const client = new cassandra.Client({contactPoints: contactPoints, keyspace: keySpace});
 const validator = require('validator');
 
-const fs = require('fs');
+
 
 
 const pointBroadcast = require('../sockets/points.js');
@@ -23,53 +23,6 @@ var exports = module.exports = {};
 
 
 
-/**
- * true when the Database should be created
- * @type {boolean}
- */
-const INITIALIZATION_OF_WORDS = true;
-
-/**
- * Number of Words in Database
- * @type {number}
- */
-exports.wordCount = 160;
-/**
- * CSV file of the Wordlist
- * @type {string}
- */
-const csvFile= "./server/model/words.csv";
-initWords();
-
-/**
- * Initialization of the wordlist
- */
-function initWords() {
-  if (INITIALIZATION_OF_WORDS) {
-    fs.readFile(csvFile, "utf8", (err, data) => {
-      let words = data.split(';');
-      exports.wordCount = words.length;
-      shuffle(words);
-      for (var i = 0; i < words.length - 1; i++) {
-        let query = "INSERT INTO words (wordno,word,isactive) values (" + i + ",'" + words[i] + "' ,false)";
-        exports.doQuery(query).subscribe(() => {
-        }, (err) => console.log("Fehler:" + err));
-      }
-      let query = "UPDATE words SET isactive = true WHERE wordno = 0";
-      exports.doQuery(query).subscribe();
-    });
-  }
-}
-/**
- * Shuffels an Array
- * @param a array
- */
-function shuffle(a) {
-  for (let i = a.length; i; i--) {
-    let j = Math.floor(Math.random() * i);
-    [a[i - 1], a[j]] = [a[j], a[i - 1]];
-  }
-}
 
 /**
  * Checks inputs
