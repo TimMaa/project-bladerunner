@@ -5,6 +5,8 @@ const client = new cassandra.Client({contactPoints: contactPoints});
 
 const fs = require('fs');
 
+const portscanner = require('portscanner');
+
 /**
  * CSV file of the Wordlist
  * @type {string}
@@ -62,9 +64,19 @@ function shuffle(a) {
   }
 }
 
-
-setTimeout(function () {
-  /* INIT */
+function executeQueries() {
   initWords(processArray(queries, query => client.execute(query).then(result => console.log(result)).catch(err => console.log(err))));
+}
 
-}, 30000);
+function checkCassandra() {
+  portscanner.checkPortStatus(9042, contactPoints[0], function(err, status) {
+    if(status === 'open') {
+      executeQueries();
+    } else {
+      console.log("Retrying!");
+      setTimeout(checkCassandra, 2000);
+    }
+  });
+}
+
+checkCassandra();
