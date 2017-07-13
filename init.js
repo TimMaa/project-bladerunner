@@ -48,7 +48,7 @@ function initWords(callback) {
       let query = "INSERT INTO gameoflife.words (wordno,word,isactive) values (" + i + ",'" + words[i] + "' ,false)";
       queries.push(query)
     }
-    let query = "UPDATE words SET gameoflife.isactive = true WHERE wordno = 0";
+    let query = "UPDATE gameoflife.words SET isactive = true WHERE wordno = 0";
     queries.push(query);
     if (callback) callback()
   });
