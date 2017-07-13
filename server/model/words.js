@@ -9,6 +9,7 @@ const wordBroadcast = require('../sockets/word.js');
 
 var exports = module.exports = {};
 
+const sessionno = 1;
 
 /**
  * WORD CREATION
@@ -25,7 +26,7 @@ exports.getWord = function () {
  * @returns {*} The Active Word
  */
 exports.getActiveWord = function () {
-  let query = "SELECT word from activeword limit 1";
+  let query = "SELECT word from activeword WHERE sessionno=" + sessionno + " limit 1";
   return model.doQuery(query);
 }
 
@@ -34,17 +35,22 @@ exports.getActiveWord = function () {
  * Changes the Active Word
  */
 exports.changeActiveWord = function () {
-  let query = "SELECT word from words WHERE wordno = "+ getWordPositionByTime();
+  let query = "SELECT word from words WHERE wordno = " + getWordPositionByTime();
   model.doQuery(query).subscribe(
     data => {
-          if(data[0]) {
-            let word = data[0].word;
-            let newQuery = "INSERT INTO activeword(sessionno, time, word) values (1, toTimestamp(now()),'" + word + "')";
-            model.doQuery(newQuery).subscribe(data => console.log(data), err => console.log(err));
-            wordBroadcast(word);
-          }
+      if (data[0]) {
+        let word = data[0].word;
+        let newQuery = "INSERT INTO activeword(sessionno, time, word) values (" + sessionno + ", toTimestamp(now()),'" + word + "')";
+        console.log("Starting Wordchange: ", word);
+        model.doQuery(newQuery).subscribe(data => {
+          wordBroadcast(word);
+          console.log("changed")
+        }, err => console.log(err));
+
+
+      }
     },
-    err => console.log("Fehler",err)
+    err => console.log("Fehler", err)
   );
 }
 
