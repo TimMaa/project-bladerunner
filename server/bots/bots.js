@@ -3,7 +3,7 @@
  * Bot for creating random points with random colors
  */
 
-var colors = [
+const colors = [
   '#000',
   '#800',
   '#F00',
@@ -20,14 +20,14 @@ var colors = [
   '#FF0',
   '#FFF',
   '#C0C0C0'
-]; //TODO Farben am Ende abgleichen falls Änderungen (weiß auf weiß?)
+];
 
 /**
- * @param max biggest possible return value
- * @returns {number} random number between 0 and max
+ * @param max = biggest possible return value
+ * @returns {number} random integer between 0 and max
  */
-var randomNumber = function (max) {
-  return Math.round(Math.random() * max);
+let randomNumber = function (max) {
+  return Math.floor(Math.random() * max);
 };
 
 /**
@@ -36,17 +36,16 @@ var randomNumber = function (max) {
  */
 $(document).ready(
   function () {
+    const maxSize = 2000;
     $('#bot').on('click', function () {
       setInterval(function () {
-        console.log("hallo");
-        var maxSize = 2000;
-        var json = {
+        let json = {
           x: randomNumber(maxSize),
           y: randomNumber(maxSize),
-          color: colors[randomNumber(16)]
+          color: colors[randomNumber(colors.length)]
         };
         $.post('/api/points/', json, function (result) {
-          console.log(result)
+          console.log(result);
         }, 'application/json');
         /*
          $.get('/api/points', function (result) {
