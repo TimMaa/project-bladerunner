@@ -131,7 +131,7 @@ exports.deletePoint = function (x, y) {
  */
 exports.emptyCoordinates = function () {
   query = "TRUNCATE coordinates;";
-  exports.doQuery(query).subscribe();
+  exports.doQuery(query);
 }
 
 
