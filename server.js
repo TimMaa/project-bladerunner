@@ -56,8 +56,10 @@ lock.on('acquire', function() {
    * DELETION of the coordinates Database
    */
   const intervalFunction = function () {
-    model.emptyCoordinates();
-    wordModel.changeActiveWord();
+    model.emptyCoordinates().subscribe(
+      () => wordModel.changeActiveWord(),
+      err => console.log("Fehler", err)
+    );
   };
   /**
    * Wird beim Start Ausgeführt
