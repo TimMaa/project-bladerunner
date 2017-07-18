@@ -20,6 +20,7 @@ export class GameComponent implements OnInit, AfterViewInit {
   posLeft: number;
   posBottom: number;
 
+  guessed: boolean = false;
   currentWord: string;
   colorsShown: boolean = false;
   inputShown: boolean = true;
@@ -74,7 +75,8 @@ export class GameComponent implements OnInit, AfterViewInit {
           this.currentWord = event.data.word;
           this.clearCanvas();
           this.getCurrentCanvas();
-        };
+          this.guessed = false;
+        }
       }
     );
   }
@@ -262,9 +264,13 @@ export class GameComponent implements OnInit, AfterViewInit {
     if (this.guessedSolution) {
       this.apiService.submitSolution(this.guessedSolution)
         .subscribe(
-          data => console.log(data)
+          data => this.guessed = data
         );
     }
+  }
+
+  changeRole() {
+    this.userService.user.type = 1;
   }
 
   /**
