@@ -17,7 +17,7 @@ const api = require('./server/routes/api');
 
 // Parsers for POST data
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Point static path to dist
 app.use(express.static(path.join(__dirname, 'dist')));
@@ -43,10 +43,10 @@ app.set('port', port);
 const server = http.createServer(app);
 
 // Consul Lock
-const lock = consul.lock({key: 'a'});
+const lock = consul.lock({ key: 'a' });
 let interval = undefined;
 
-lock.on('acquire', function () {
+lock.on('acquire', function() {
   console.log("lock aquired");
   if (interval) {
     clearInterval(interval);
@@ -56,10 +56,8 @@ lock.on('acquire', function () {
    * DELETION of the coordinates Database
    */
   const intervalFunction = function () {
-    model.emptyCoordinates().subscribe(
-      () => wordModel.changeActiveWord(),
-      err => console.log("Fehler", err)
-    );
+    model.emptyCoordinates();
+    wordModel.changeActiveWord();
   };
   /**
    * Wird beim Start Ausgeführt
@@ -68,27 +66,27 @@ lock.on('acquire', function () {
   /**
    * Wird alle 5 Min Ausgeführt
    */
-  interval = setInterval(function () {
+  interval = setInterval(function() {
     intervalFunction();
 
-  }, 30 * 1000);
+  }, 30  * 1000);
 });
 
-lock.on('release', function () {
+lock.on('release', function() {
   if (interval) {
     clearInterval(interval);
     interval = undefined;
   }
 });
 
-lock.on('error', function () {
+lock.on('error', function() {
   if (interval) {
     clearInterval(interval);
     interval = undefined;
   }
 });
 
-lock.on('end', function (err) {
+lock.on('end', function(err) {
   if (interval) {
     clearInterval(interval);
     interval = undefined;
