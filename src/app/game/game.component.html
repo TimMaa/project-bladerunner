@@ -1,4 +1,14 @@
 <!--
+  Shown when guesses correctly
+-->
+<div class="correctGuess" *ngIf="guessed && userService.user.type == 2" fxLayout="column" fxLayoutAlign="center center" >
+    <div class="material-icons correctGuessIcon">done</div>
+    <div class="correctGuessText">You guessed correctly!</div>
+    <button md-button class="correctGuessButton" (click)="changeRole()">Become a good Painter</button>
+</div>
+
+
+<!--
   Used for Scrolling on the page
 -->
 <div *ngIf="posTop < 0 && zoom == 1"
