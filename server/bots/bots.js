@@ -2,7 +2,9 @@
  * Created by dommes on 10.07.2017.
  * Bot for creating random points with random colors
  */
+
 const request = require('request');
+
 /**
  * When button is clicked bot starts creating random points and colors and
  * sends those to api/points/
@@ -29,6 +31,7 @@ const request = require('request');
     '#FFF',
     '#C0C0C0'
   ];
+
   /**
    * @param max = biggest possible return value
    * @returns {number} random integer between 0 and max
@@ -44,6 +47,7 @@ const request = require('request');
       y: randomNumber(maxSize),
       color: colors[randomNumber(colors.length)]
     };
+
     request.post({
       headers: {'content-type': 'application/json'},
       url,

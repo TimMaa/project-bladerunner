@@ -111,7 +111,6 @@ router.get('/bot/bots.js', (req, res) => {
   res.sendFile(path.join(__dirname, '../bots/bots.js'));
 });
 
-
 /**
  * GET | GETS THE ACTUAL WORD
  */
