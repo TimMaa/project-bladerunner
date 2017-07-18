@@ -2,15 +2,15 @@
  * Created by dommes on 10.07.2017.
  * Bot for creating random points with random colors
  */
-
+const request = require('request');
 /**
  * When button is clicked bot starts creating random points and colors and
  * sends those to api/points/
  */
-function botstart(url,intervalTime,maxSize, post) {
-  const url = url || '/api/points/';
-  const intervalTime = intervalTime || 10;
-  const maxSize = maxSize || 2000;
+(function botstart(url,intervalTime,maxSize) {
+  url = url || '/api/points/';
+  intervalTime = intervalTime || 10;
+  maxSize = maxSize || 2000;
   const colors = [
     '#000',
     '#800',
@@ -29,11 +29,6 @@ function botstart(url,intervalTime,maxSize, post) {
     '#FFF',
     '#C0C0C0'
   ];
-  let post = post || function (url, json) {
-    $.post(url, json, function (result) {
-      console.log(result);
-    }, 'application/json');
-  };
   /**
    * @param max = biggest possible return value
    * @returns {number} random integer between 0 and max
@@ -49,7 +44,12 @@ function botstart(url,intervalTime,maxSize, post) {
       y: randomNumber(maxSize),
       color: colors[randomNumber(colors.length)]
     };
-    post(url, json);
+    request.post({
+      headers: {'content-type': 'application/json'},
+      url,
+      body: json
+    }, function (error, response, body) {
+    });
   }, intervalTime);
-}
+})();
 
