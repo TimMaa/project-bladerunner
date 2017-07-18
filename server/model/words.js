@@ -35,22 +35,30 @@ exports.getActiveWord = function () {
  * Changes the Active Word
  */
 exports.changeActiveWord = function () {
-  let query = "SELECT word from words WHERE wordno = " + getWordPositionByTime();
-  model.doQuery(query).subscribe(
-    data => {
-      if (data[0]) {
-        let word = data[0].word;
-        let newQuery = "INSERT INTO activeword(sessionno, time, word) values (" + sessionno + ", toTimestamp(now()),'" + word + "')";
-        console.log("Starting Wordchange: ", word);
-        model.doQuery(newQuery).subscribe(data => {
-          wordBroadcast(word);
-          console.log("changed")
-        }, err => console.log(err));
+
+  getWordCount().subscribe(count => {
+
+      let position = Math.floor(Math.random() * count[0].count);
+
+      let query = "SELECT word from words WHERE wordno = " + position;
+      model.doQuery(query).subscribe(
+        data => {
+          if (data[0]) {
+            let word = data[0].word;
+            let newQuery = "INSERT INTO activeword(sessionno, time, word) values (" + sessionno + ", toTimestamp(now()),'" + word + "')";
+            console.log("Starting Wordchange: ", word);
+            model.doQuery(newQuery).subscribe(data => {
+              wordBroadcast(word);
+              console.log("changed")
+            }, err => console.log(err));
 
 
-      }
+          }
+        },
+        err => console.log("Fehler", err)
+      );
     },
-    err => console.log("Fehler", err)
+    err => console.log("Fehler bei onChangeActiveWord", err)
   );
 }
 
@@ -59,8 +67,8 @@ exports.changeActiveWord = function () {
  * Gets the actual Position of the Gameword
  * @returns {number} Position
  */
-function getWordPositionByTime() {
-  let time = Date.now();
-  return time % model.wordCount;
+function getWordCount() {
+  query = "SELECT count(*) FROM words;"
+  return model.doQuery(query);
 };
 
