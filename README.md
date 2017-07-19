@@ -17,7 +17,7 @@ Run `npm start` for a dev Angular server. Navigate to `http://localhost:4200/`.
 The app will automatically reload if you change any of the source files.
 It's also great for just showing it temporarily.
 
-Run `PUBLISHER=<nchan_IP_here[most likely 192.168.99.100]> npm run start-express` for a dev Express server.
+Run `WORDTIME=30000 PUBLISHER=<nchan_IP_here[most likely 192.168.99.100]> npm run start-express` for a dev Express server.
 
 ## Build
 
