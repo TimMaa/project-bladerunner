@@ -49,3 +49,7 @@ docker run --name <your_beautiful_other_name_here> -d -p "0.0.0.0:9080:9080" <th
 ## How to send publish POSTS to clients
 
 Please send your POST requests to http://nginx_lb:1080/pub
+
+## How to start Bot
+
+BOTTARGET=217.182.197.2 node server/bots/bots.js
