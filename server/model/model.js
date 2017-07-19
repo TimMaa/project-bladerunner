@@ -10,7 +10,6 @@ const Rx = require('rxjs/Rx');
 const contactPoints = process.env.CASSANDRA ? process.env.CASSANDRA.split(',') : ['192.168.99.100'];
 const keySpace = 'gameoflife';
 
-const words = require('words.js');
 const cassandra = require('cassandra-driver');
 const client = new cassandra.Client({contactPoints: contactPoints, keyspace: keySpace});
 const validator = require('validator');
@@ -136,18 +135,5 @@ exports.emptyCoordinates = function () {
 }
 
 
-/**
- * Compares an guess with the correct answer
- *
- * @param loesung
- * @param callback Callback(boolean) -> True guess is correct; False guess is incorrect.
- */
-exports.getSolution = function (loesung, callback) {
-  let erg = words.getWord();
 
-  erg.subscribe(data => {
-      callback(data[0].word === loesung);
-    }
-    , err => callback(null));
-}
 

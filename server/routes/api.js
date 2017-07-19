@@ -93,7 +93,7 @@ router.post('/points/', (req, res) => {
  */
 router.get('/solution/:solution', (req, res) => {
   let solution = req.params.solution;
-  data.getSolution(solution, data => {
+  word.getSolution(solution, data => {
     res.status(data === null ? 400 : 200);
     res.send(data);
   });
