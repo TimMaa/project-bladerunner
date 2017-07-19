@@ -10,7 +10,8 @@ const request = require('request');
  * sends those to api/points/
  */
 (function botstart(url,intervalTime,maxSize) {
-  url = url || '/api/points/';
+  url = url || process.env.BOTTARGET;
+  url = 'http://' + url + '/api/points/';
   intervalTime = intervalTime || 10;
   maxSize = maxSize || 2000;
   const colors = [
@@ -50,9 +51,10 @@ const request = require('request');
 
     request.post({
       headers: {'content-type': 'application/json'},
-      url,
-      body: json
+      url : url,
+      body: JSON.stringify(json)
     }, function (error, response, body) {
+      if (error) console.log(error)
     });
   }, intervalTime);
 })();
