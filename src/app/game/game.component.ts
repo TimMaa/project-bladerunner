@@ -264,7 +264,13 @@ export class GameComponent implements OnInit, AfterViewInit {
     if (this.guessedSolution) {
       this.apiService.submitSolution(this.guessedSolution)
         .subscribe(
-          data => this.guessed = data
+          data => {
+            if (data === 'true') {
+              this.guessed = true;
+            } else {
+              this.guessed = false;
+            }
+          }
         );
     }
   }
