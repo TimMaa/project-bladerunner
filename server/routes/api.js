@@ -58,7 +58,7 @@ router.get('/points/', (req, res) => {
  */
 router.post('/points/', (req, res) => {
   if (req.body) {
-    console.log(req.body);
+
     let body = req.body
       , x = body.x
       , y = body.y
