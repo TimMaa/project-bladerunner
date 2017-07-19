@@ -66,15 +66,15 @@ router.post('/points/', (req, res) => {
     if (x && y && color) {
       data.setPoint(x, y, color).subscribe(
         () => {
-        },
+          res.status(200);
+          res.send("created");
+        }
+        ,
         err => {
           res.status(400);
           res.send(err);
-        },
-        () => {
-          res.status(200);
-          res.send("created");
-        });
+        }
+      );
     } else {
       res.status(400);
       res.send("Wrong information sent");
@@ -84,7 +84,8 @@ router.post('/points/', (req, res) => {
     res.status(400);
     res.send("Error: No body");
   }
-});
+})
+;
 
 /**
  *GET | COMPARES GUESS
@@ -93,7 +94,7 @@ router.post('/points/', (req, res) => {
  */
 router.get('/solution/:solution', (req, res) => {
   let solution = req.params.solution;
-  data.getSolution(solution, data => {
+  word.getSolution(solution, data => {
     res.status(data === null ? 400 : 200);
     res.send(data);
   });
@@ -108,7 +109,7 @@ router.get('/word', (req, res) => {
     res.status(data === null ? 400 : 200);
     if (data[0]) {
       res.send(data[0].word);
-    }
+    }else res.send("");
   }, err => {
     res.status(500);
     res.send(err)

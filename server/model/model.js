@@ -135,18 +135,5 @@ exports.emptyCoordinates = function () {
 }
 
 
-/**
- * Compares an guess with the correct answer
- *
- * @param loesung
- * @param callback Callback(boolean) -> True guess is correct; False guess is incorrect.
- */
-exports.getSolution = function (loesung, callback) {
-  let erg = exports.getWord();
 
-  erg.subscribe(data => {
-      callback(data[0].word === loesung);
-    }
-    , err => callback(null));
-}
 
