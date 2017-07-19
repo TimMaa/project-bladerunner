@@ -45,6 +45,7 @@ const server = http.createServer(app);
 // Consul Lock
 const lock = consul.lock({ key: 'a' });
 let interval = undefined;
+let intervalTime = process.env.WORDTIME ? parseInt(process.env.WORDTIME) : 5 * 60 * 1000;
 
 lock.on('acquire', function() {
   console.log("lock aquired");
@@ -71,7 +72,7 @@ lock.on('acquire', function() {
   interval = setInterval(function() {
     intervalFunction();
 
-  }, 30  * 1000);
+  }, intervalTime);
 });
 
 lock.on('release', function() {
