@@ -79,7 +79,7 @@ function getWordCount() {
  * @param callback Callback(boolean) -> True guess is correct; False guess is incorrect.
  */
 exports.getSolution = function (loesung, callback) {
-  let erg = getWord();
+  let erg = exports.getWord();
 
   erg.subscribe(data => {
       callback(data[0].word === loesung);
