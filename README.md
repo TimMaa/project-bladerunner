@@ -13,7 +13,7 @@ The entire project is running at 217.182.197.2. **Come join us!**
 If you want to easily start everything you need, just use the Docker Compose file: 
 
 ```
-wget https://raw.githubusercontent.com/TimMaa/project-bladerunner/develop/docker-compose.yml
+curl -o docker-compose.yml https://raw.githubusercontent.com/TimMaa/project-bladerunner/develop/docker-compose.yml
 docker-compose up
 ```
 
