@@ -12,13 +12,13 @@ services:
           - CASSANDRA_SEEDS=cassandra_seed
 
     init:
-        image: bladerunner
+        image: timmaa/project-bladerunner
         command: ["node", "init.js"]
         environment:
           - CASSANDRA=cassandra_seed
 
     usecase:
-        image: bladerunner
+        image: timmaa/project-bladerunner
         restart: always
         environment:
           - SERVICE_NAME=app
@@ -28,7 +28,7 @@ services:
           - "PUBLISHER=http://nginx_lb:1080/pub"
 
     nginx_lb:
-        image: nginx-lb-cassandra
+        image: timmaa/nginx-lb-nchan
         depends_on:
           - usecase
         ports:
