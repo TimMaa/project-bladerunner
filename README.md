@@ -6,6 +6,20 @@ In this game, everyone can collaborate to create an awesome image. Everyone else
 
 The entire project is running at 217.182.197.2. **Come join us!**
 
+
+## Production
+
+### Local Start of Everything
+If you want to easily start everything you need, just use the Docker Compose file: 
+
+```
+wget https://raw.githubusercontent.com/TimMaa/project-bladerunner/develop/docker-compose.yml
+docker-compose up
+```
+
+The server will then be available on port 80
+
+
 ## Development Environment
 
 ### Development Angular Server
@@ -35,13 +49,14 @@ To run a seperate Consul you can use a simple docker container.
 
 ### Run Test nginx and nchan Container
 To run the nginx Container, which works with cassandra, use the following command:
-`docker pull nginx-lb-cassandra`
-`docker run -ti -d -p 80:80 -p 1080:1080 --link=consul nginx-lb-cassandra`
+`docker pull timmaa/nginx-lb-nachan`
+`docker run -ti -d -p 80:80 -p 1080:1080 --link=consul timmaa/nginx-lb-nachan`
   
 #### Build local nchan Container
-`cd /nchan
-docker build -t nginx-lb-cassandra
-docker run --name nchan -d -p "0.0.0.0:9080:9080" nginx-lb-cassandra`
+```cd /nchan
+docker build -t timmaa/nginx-lb-nchan
+docker run --name nchan -d -p "0.0.0.0:9080:9080" timmaa/nginx-lb-nachan
+```
 
 
 ### Start Express-Api Development Environment
@@ -49,9 +64,9 @@ docker run --name nchan -d -p "0.0.0.0:9080:9080" nginx-lb-cassandra`
 
 Before starting Express-Backend please start Cassandra and run `node init.js` once
 
+### Start Bot
+Local:
+`BOTTARGET=<ip> BOTTIME=<intervall_in_ms> node server/bots/bots.js` 
+In Container:
 
-## Production
-
-### Local Start of Everything
-If you want to easily start everything you need, just use the Docker Compose file: 
-`docker-compose up`
+`docker run --name bot1 -d -p timma/project-bladerunner node server/bots/bots.js`
