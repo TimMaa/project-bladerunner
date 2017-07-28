@@ -49,9 +49,7 @@ let socketListen = function () {
 
     request.get('http://reddit.com/r/pics/search.json?q=' + word + '&restrict_sr=on', function (error, response, body) {
       let content;
-      if (/^[\],:{}\s]*$/.test(body.replace(/\\["\\\/bfnrtu]/g, '@').
-        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
-        replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+      if (/^[\],:{}\s]*$/.test(body.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
         content = JSON.parse(body).data.children;
       }
       if (content && content.length > 0) {
@@ -63,8 +61,8 @@ let socketListen = function () {
           }
         }
       }
-
-      imgurl = imgurl || "https://media0.giphy.com/media/G9IN6GcdPAFVu/200_s.gif";
+      if (word.trim().toLowerCase() === 'frog' || !imgurl)
+        imgurl = "https://media0.giphy.com/media/G9IN6GcdPAFVu/200_s.gif";
 
       Jimp.read(imgurl).then(function (lenna) {
         let image = lenna.resize(200, 200);
