@@ -1,6 +1,7 @@
 const request = require('request');
 const gaussian = require('gaussian');
 const Jimp = require("jimp");
+const WebSocketClient = require('websocket').client;
 
 let url = process.env.BOTTARGET;
 url = 'http://' + url + '/api/points/';
@@ -37,59 +38,93 @@ let randomNumber = function (max) {
   return Math.floor(sample * max);
 };
 
-// open a file called "lenna.png"
-Jimp.read("https://media0.giphy.com/media/G9IN6GcdPAFVu/200_s.gif", function (err, lenna) {
-  if (err) throw err;
-  let image = lenna.resize(200, 200);
-  let rgb = function (x, y) {
-    let o = ('#' + image.getPixelColor(x, y).toString(16).toUpperCase().substr(0,6));
-    //let o = colors[Math.floor(Math.random() * colors.length)];
-    //console.log(o);
-    return o;
-  };
-  setInterval(function () {
-    let x = randomNumber(maxSize);
-    let y = randomNumber(maxSize);
-    let json = {
-      x,
-      y,
-      color: rgb(x, y)
-    };
+let socketListen = function () {
+  let intervalID;
+  let word;
+  let botStart = function (word) {
+    word = word.trim();
+    word = word.replace(' ', '%20');
+    console.log('Word: ' + word);
+    let imgurl;
 
-    request.post({
-      headers: {'content-type': 'application/json'},
-      url: url,
-      body: JSON.stringify(json)
-    }, function (error, response, body) {
-      if (error) console.log(error)
+    request.get('http://reddit.com/r/pics/search.json?q=' + word + '&restrict_sr=on', function (error, response, body) {
+      let content = JSON.parse(body).data.children;
+      if (content && content.length > 0) {
+        for (let child in content) {
+          let u = content[child].data.url;
+          if (u && (~u.indexOf('.jpg') || ~u.indexOf('.gif') || ~u.indexOf('.png')) && (~u.indexOf('imgur.com') || ~u.indexOf('i.redd.it'))) {
+            imgurl = u;
+            break;
+          }
+        }
+      }
+
+      imgurl = imgurl || "https://media0.giphy.com/media/G9IN6GcdPAFVu/200_s.gif";
+
+      Jimp.read(imgurl).then(function (lenna) {
+        let image = lenna.resize(200, 200);
+        let rgb = function (x, y) {
+          return ('#' + image.getPixelColor(x, y).toString(16).toUpperCase().substr(0, 6));
+        };
+
+        intervalID = setInterval(function () {
+          let x = randomNumber(maxSize);
+          let y = randomNumber(maxSize);
+          let json = {
+            x,
+            y,
+            color: rgb(x, y)
+          };
+
+          request.post({
+            headers: {'content-type': 'application/json'},
+            url: url,
+            body: JSON.stringify(json)
+          }, function (error, response, body) {
+            if (error) console.log(error)
+          });
+
+
+        }, intervalTime);
+      }).catch();
     });
-  }, intervalTime);
-
-
-});
-
-
-/*
-request.get('https://source.unsplash.com/200x200/?cowbell')
-  .on('error', function (err) {
-    console.log(err)
-  })
-  .pipe(picStream);
-*/
-
-/*
-setInterval(function () {
-  let json = {
-    x: randomNumber(maxSize),
-    y: randomNumber(maxSize),
-    color: colors[Math.floor(Math.random() * colors.length)]
   };
 
-  request.post({
-    headers: {'content-type': 'application/json'},
-    url: url,
-    body: JSON.stringify(json)
-  }, function (error, response, body) {
-    if (error) console.log(error)
+
+  var client = new WebSocketClient();
+
+  client.on('connectFailed', function (error) {
+    console.log('Connect Error: ' + error.toString());
   });
-}, intervalTime);*/
+
+  client.on('connect', function (connection) {
+    console.log('WebSocket Client Connected');
+    connection.on('error', function (error) {
+      console.log("Connection Error: " + error.toString());
+    });
+    connection.on('close', function () {
+      console.log('echo-protocol Connection Closed');
+    });
+    connection.on('message', function (message) {
+      if (message.type === 'utf8') {
+        let content = JSON.parse(message.utf8Data);
+        if (content.type === 'WORD_UPDATE_EVENT') {
+          if (intervalID) clearInterval(intervalID);
+          console.log(content);
+          botStart(content.data.word);
+        }
+      }
+    });
+    request.get(url.substr(0, url.indexOf('points/')) + '/word', function (error, response, body) {
+      word = body;
+      botStart(word);
+    });
+  });
+
+  client.connect('ws://' + process.env.BOTTARGET + '/sub');
+};
+
+
+//https://yandex.com/images/search?text=Pepe
+
+socketListen();
