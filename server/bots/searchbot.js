@@ -48,7 +48,12 @@ let socketListen = function () {
     let imgurl;
 
     request.get('http://reddit.com/r/pics/search.json?q=' + word + '&restrict_sr=on', function (error, response, body) {
-      let content = JSON.parse(body).data.children;
+      let content;
+      if (/^[\],:{}\s]*$/.test(body.replace(/\\["\\\/bfnrtu]/g, '@').
+        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+        replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
+        content = JSON.parse(body).data.children;
+      }
       if (content && content.length > 0) {
         for (let child in content) {
           let u = content[child].data.url;
