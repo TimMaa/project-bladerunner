@@ -4,7 +4,6 @@
  */
 
 const request = require('request');
-
 /**
  * When button is clicked bot starts creating random points and colors and
  * sends those to api/points/
@@ -13,7 +12,7 @@ const request = require('request');
   url = url || process.env.BOTTARGET;
   url = 'http://' + url + '/api/points/';
   intervalTime = intervalTime || (process.env.BOTTIME ? parseInt(process.env.BOTTIME) : 10 );
-  maxSize = maxSize || 2000;
+  maxSize = maxSize || 200;
   const colors = [
     '#000',
     '#800',
@@ -46,7 +45,7 @@ const request = require('request');
     let json = {
       x: randomNumber(maxSize),
       y: randomNumber(maxSize),
-      color: colors[randomNumber(colors.length)]
+      color: colors[Math.floor(Math.random() * colors.length)]
     };
 
     request.post({
@@ -58,4 +57,3 @@ const request = require('request');
     });
   }, intervalTime);
 })();
-
