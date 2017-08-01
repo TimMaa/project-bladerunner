@@ -4,8 +4,6 @@ services:
     cassandra_seed:
         image: cassandra:3
         restart: always
-        volumes:
-          - cassandra_seed_data:/var/lib/cassandra:rw
 
     cassandra:
         image: cassandra:3
@@ -13,10 +11,16 @@ services:
         environment:
           - CASSANDRA_SEEDS=cassandra_seed
 
+    init:
+        image: timmaa/project-bladerunner
+        command: ["./wait-for-it.sh", "cassandra_seed:9042", "-t", "0", "--", "node", "init.js"]
+        environment:
+          - CASSANDRA=cassandra_seed
+
     usecase:
         image: timmaa/project-bladerunner
         restart: always
-        command: ["./wait-for-it.sh", "cassandra_seed:9042", "--", "node", "server.js"]
+        command: ["./wait-for-it.sh", "cassandra_seed:9042",  "-t", "0", "--", "node", "server.js"]
         environment:
           - SERVICE_NAME=app
           - SERVICE_TAGS=production
@@ -42,6 +46,3 @@ services:
         command: -internal -resync 600 consul://consul:8500
         volumes:
           - "/var/run/docker.sock:/tmp/docker.sock"
-
-volumes:
-    cassandra_seed_data:
