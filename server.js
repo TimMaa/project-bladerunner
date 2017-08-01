@@ -96,8 +96,13 @@ lock.on('end', function(err) {
   }
 });
 
-lock.acquire();
-/**
- * Listen on provided port, on all network interfaces.
- */
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+console.log("Waiting 5 seconds till we try to acquire the lock and listen to the port");
+
+setTimeout(function() {
+  lock.acquire();
+  
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+  server.listen(port, () => console.log(`API running on localhost:${port}`));
+}, 5000);

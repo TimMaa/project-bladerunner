@@ -13,13 +13,14 @@ services:
 
     init:
         image: timmaa/project-bladerunner
-        command: ["node", "init.js"]
+        command: ["./wait-for-it.sh", "cassandra_seed:9042", "-t", "0", "--", "node", "init.js"]
         environment:
           - CASSANDRA=cassandra_seed
 
     usecase:
         image: timmaa/project-bladerunner
         restart: always
+        command: ["./wait-for-it.sh", "cassandra_seed:9042",  "-t", "0", "--", "node", "server.js"]
         environment:
           - SERVICE_NAME=app
           - SERVICE_TAGS=production
