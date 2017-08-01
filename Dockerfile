@@ -12,6 +12,8 @@ ADD . .
 
 RUN ng build --prod --output-hashing none --no-progress
 
+RUN chmod +x wait-for-it.sh
+
 EXPOSE 3000
 
 CMD ["node", "server.js"]
