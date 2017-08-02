@@ -122,7 +122,7 @@ setTimeout(function() {
       check: {
         ttl: '10s',
       },
-      port: port,
+      port: parseInt(port),
       id: CONSUL_ID
     };
 
