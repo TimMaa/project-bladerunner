@@ -22,6 +22,8 @@ The server will then be available on port 80
 
 ## Development Environment
 
+Please keep in mind that 192.168.99.100 is the ip of our Docker for Windows VM. If you're on Linux or Mac OS it'll likely be simply 127.0.0.1.
+
 ### Development Angular Server
 
 Run `npm start` for a basic dev Angular Frontend server. Navigate to `http://localhost:4200/`. 
@@ -40,31 +42,23 @@ To run a seperate Cassandra you can use a simple docker container.
 
 `docker run --name cassandra -d -p "0.0.0.0:7191:7191" -p "0.0.0.0:7000:7000" -p "0.0.0.0:7001:7001" -p "0.0.0.0:9160:9160" -p "0.0.0.0:9042:9042" -e CASSANDRA_BROADCAST_ADDRESS=192.168.99.100 cassandra:latest`
 
-
 ### Run Test Consul Container
 To run a seperate Consul you can use a simple docker container.
-`docker run -ti -d --name=consul gliderlabs/consul-server:latest -bootstrap`
+`docker run -ti -d -p 8500:8500 --name=consul gliderlabs/consul-server:latest -bootstrap`
 
 ### Run Test nginx and nchan Container
 To run the nginx Container, which works with cassandra, use the following command:
-`docker pull timmaa/nginx-lb-nachan`
 `docker run -ti -d -p 80:80 -p 1080:1080 --link=consul timmaa/nginx-lb-nchan`
-  
-#### Build local nchan Container
-```cd /nchan
-docker build -t timmaa/nginx-lb-nchan
-docker run --name nchan -d -p "0.0.0.0:9080:9080" timmaa/nginx-lb-nchan
-```
-
 
 ### Start Express-Api Development Environment
-`PUBLISHER=192.168.99.100 npm run start-express`
+`PUBLISHER=192.168.99.100 CASSANDRA=192.168.99.100 CONSUL=192.168.99.100 npm run start-express`
 
-Before starting Express-Backend please start Cassandra and run `node init.js` once
+Our npm relies on nodemon. If you do want to install it use `npm install -g nodemon` otherwise just replace `npm run start-express` with `node server.js`
+
+Before starting Express-Backend please start Cassandra and run `CASSANDRA=192.168.99.100 node init.js` once.
 
 ### Start Bot
 Local:
 `BOTTARGET=<ip> BOTTIME=<intervall_in_ms> node server/bots/bots.js` 
 In Container:
-
 `docker run --name bot1 -d -p timma/project-bladerunner node server/bots/bots.js`
