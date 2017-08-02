@@ -111,7 +111,7 @@ setTimeout(function() {
 
     // Consul registration by https://github.com/tlhunter/consul-haproxy-example
 
-    const CONSUL_ID = app-${os.hostname()}-${port}-${uuid.v4()}`
+    const CONSUL_ID = `app-${os.hostname()}-${port}-${uuid.v4()}`;
 
     let details = {
       name: 'app',
