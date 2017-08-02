@@ -4,6 +4,8 @@ const app = express();
 const path = require('path');
 const http = require('http');
 const bodyParser = require('body-parser');
+const os = require('os');
+const uuid = require('uuid');
 
 const model = require('./server/model/model');
 const wordModel = require('./server/model/words');
@@ -45,6 +47,7 @@ const server = http.createServer(app);
 // Consul Lock
 const lock = consul.lock({ key: 'a' });
 let interval = undefined;
+let intervalTime = process.env.WORDTIME ? parseInt(process.env.WORDTIME) : 5 * 60 * 1000;
 
 lock.on('acquire', function() {
   console.log("lock aquired");
@@ -71,7 +74,7 @@ lock.on('acquire', function() {
   interval = setInterval(function() {
     intervalFunction();
 
-  }, 30  * 1000);
+  }, intervalTime);
 });
 
 lock.on('release', function() {
@@ -95,8 +98,55 @@ lock.on('end', function(err) {
   }
 });
 
-lock.acquire();
-/**
- * Listen on provided port, on all network interfaces.
- */
-server.listen(port, () => console.log(`API running on localhost:${port}`));
+console.log("Waiting 5 seconds till we try to acquire the lock and listen to the port");
+
+setTimeout(function() {
+  lock.acquire();
+  
+  /**
+   * Listen on provided port, on all network interfaces.
+   */
+  server.listen(port, () => {
+    console.log(`API running on localhost:${port}`);
+
+    // Consul registration by https://github.com/tlhunter/consul-haproxy-example
+
+    const CONSUL_ID = `app-${os.hostname()}-${port}-${uuid.v4()}`;
+
+    let details = {
+      name: 'app',
+      address: os.hostname(),
+      tags: [
+        'production'
+      ],
+      check: {
+        ttl: '10s',
+      },
+      port: parseInt(port),
+      id: CONSUL_ID
+    };
+
+    consul.agent.service.register(details, (err, xyz) => {
+      if (err) {
+        throw new Error(err);
+      }
+      console.log('registered with Consul');
+
+      setInterval(() => {
+        consul.agent.check.pass({id:`service:${CONSUL_ID}`}, err => {
+          if (err) throw new Error(err);
+          console.log('told Consul that we are healthy');
+        });
+      }, 5 * 1000);
+
+      process.on('SIGINT', () => {
+        console.log('SIGINT. De-Registering...');
+        let details = {id: CONSUL_ID};
+        consul.agent.service.deregister(details, (err) => {
+          console.log('de-registered.', err);
+          process.exit();
+        });
+      });
+    });
+  });
+}, 5000);

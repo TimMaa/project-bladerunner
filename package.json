@@ -31,13 +31,16 @@
     "core-js": "^2.4.1",
     "express": "^4.15.3",
     "fs": "0.0.1-security",
+    "gaussian": "^1.1.0",
     "htmlspecialchars": "^1.0.5",
+    "jimp": "^0.2.28",
     "morgan": "^1.8.2",
     "portscanner": "^2.1.1",
     "request": "^2.81.0",
     "rx": "^4.1.0",
     "rxjs": "^5.1.0",
     "validator": "^7.2.0",
+    "websocket": "^1.0.24",
     "zone.js": "^0.8.4"
   },
   "devDependencies": {

@@ -15,13 +15,9 @@ const client = new cassandra.Client({contactPoints: contactPoints, keyspace: key
 const validator = require('validator');
 
 
-
-
 const pointBroadcast = require('../sockets/points.js');
 
 var exports = module.exports = {};
-
-
 
 
 /**
@@ -72,8 +68,20 @@ exports.doQuery = function (query) {
  * @returns Observable, welches eine JSON Liste mit den Objekten zurückgibt
  */
 exports.getPoints = function () {
-  let query = 'SELECT * FROM coordinates';
-  return exports.doQuery(query);
+  return Rx.Observable.create(observer => {
+    let query = 'SELECT * FROM coordinates';
+    let rows = [];
+    //return exports.doQuery(query);
+    client.eachRow(query, [], {prepare: true, autoPage: true}, function (n, row) {
+      rows.push(row);
+
+    }, function (err) {
+      if (err)
+        observer.error(err);
+      else
+        observer.next(rows);
+    });
+  });
 }
 
 
@@ -102,7 +110,7 @@ exports.getPoint = function (x, y) {
 exports.setPoint = function (x, y, color) {
   if (checkValues(x, y, color)) {
     let query = "INSERT INTO coordinates(x,y,color,time) values (" + x + "," + y + ",'" + color + "', toTimestamp(now()));";
-    pointBroadcast(x ,y,color);
+    pointBroadcast(x, y, color);
     return exports.doQuery(query);
   } else {
     return Rx.Observable.create(observer => {
@@ -135,18 +143,5 @@ exports.emptyCoordinates = function () {
 }
 
 
-/**
- * Compares an guess with the correct answer
- *
- * @param loesung
- * @param callback Callback(boolean) -> True guess is correct; False guess is incorrect.
- */
-exports.getSolution = function (loesung, callback) {
-  let erg = exports.getWord();
 
-  erg.subscribe(data => {
-      callback(data[0].word === loesung);
-    }
-    , err => callback(null));
-}
 
