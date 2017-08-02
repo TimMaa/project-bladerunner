@@ -2,9 +2,9 @@
 
 This great project is the answer to all your questions.
 It was created for a project which showcases a **Cassandra Use-Case**.
-In this game, everyone can collaborate to create an awesome image. Everyone else can then guess the correct answer and gain points to get the highest highscore scored.
+In this game, everyone can collaborate to create an awesome image. Everyone else can then guess the correct answer and sometime in the future gain points to get the highest highscore scored.
 
-The entire project is running at 217.182.197.2. **Come join us!**
+The entire project is running at [cas.chd.cx](cas.chd.cx). **Come join us!**
 
 
 ##Why Cassandra?
