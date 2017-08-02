@@ -7,7 +7,7 @@ In this game, everyone can collaborate to create an awesome image. Everyone else
 The entire project is running at 217.182.197.2. **Come join us!**
 
 
-##Why Cassandra?
+## Why Cassandra?
 
 The idea behind "The Monday Painters" is a game in which multiple are able to exchange their painting and guessing abilities.
 To achieve this, it is mandatory to set a stable infrastructure due to performance and user experience. This is were _cassandra_ comes into focus.
