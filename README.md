@@ -51,7 +51,7 @@ To run the nginx Container, which works with cassandra, use the following comman
 `docker run -ti -d -p 80:80 -p 1080:1080 --link=consul timmaa/nginx-lb-nchan`
 
 ### Start Express-Api Development Environment
-`PUBLISHER=192.168.99.100 CASSANDRA=192.168.99.100 CONSUL=192.168.99.100 npm run start-express`
+`PUBLISHER="http://192.168.99.100:1080/pub" CASSANDRA=192.168.99.100 CONSUL=192.168.99.100 npm run start-express`
 
 Our npm relies on nodemon. If you do want to install it use `npm install -g nodemon` otherwise just replace `npm run start-express` with `node server.js`
 
@@ -59,6 +59,4 @@ Before starting Express-Backend please start Cassandra and run `CASSANDRA=192.16
 
 ### Start Bot
 Local:
-`BOTTARGET=<ip> BOTTIME=<intervall_in_ms> node server/bots/bots.js` 
-In Container:
-`docker run --name bot1 -d -p timma/project-bladerunner node server/bots/bots.js`
+`BOTTARGET=<ip> BOTTIME=<intervall_in_ms> node server/bots/bots.js`
