@@ -48,7 +48,7 @@ To run a seperate Consul you can use a simple docker container.
 ### Run Test nginx and nchan Container
 To run the nginx Container, which works with cassandra, use the following command:
 `docker pull timmaa/nginx-lb-nachan`
-`docker run -ti -d -p 80:80 -p 1080:1080 --link=consul timmaa/nginx-lb-nachan`
+`docker run -ti -d -p 80:80 -p 1080:1080 --link=consul timmaa/nginx-lb-nchan`
   
 #### Build local nchan Container
 ```cd /nchan
