@@ -22,8 +22,6 @@ services:
         restart: always
         command: ["./wait-for-it.sh", "cassandra_seed:9042",  "-t", "0", "--", "node", "server.js"]
         environment:
-          - SERVICE_NAME=app
-          - SERVICE_TAGS=production
           - CASSANDRA=cassandra_seed
           - CONSUL=consul
           - "PUBLISHER=http://nginx_lb:1080/pub"
@@ -38,11 +36,3 @@ services:
     consul:
         image: gliderlabs/consul-server:latest
         command: -bootstrap
-        
-    registrator:
-        image: gliderlabs/registrator:master
-        depends_on:
-          - consul
-        command: -internal -resync 600 consul://consul:8500
-        volumes:
-          - "/var/run/docker.sock:/tmp/docker.sock"
