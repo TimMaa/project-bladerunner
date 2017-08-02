@@ -40,8 +40,6 @@ To run a seperate Cassandra you can use a simple docker container.
 
 `docker run --name cassandra -d -p "0.0.0.0:7191:7191" -p "0.0.0.0:7000:7000" -p "0.0.0.0:7001:7001" -p "0.0.0.0:9160:9160" -p "0.0.0.0:9042:9042" -e CASSANDRA_BROADCAST_ADDRESS=192.168.99.100 cassandra:latest`
 
-`node init.js`
-
 
 ### Run Test Consul Container
 To run a seperate Consul you can use a simple docker container.
@@ -55,7 +53,7 @@ To run the nginx Container, which works with cassandra, use the following comman
 #### Build local nchan Container
 ```cd /nchan
 docker build -t timmaa/nginx-lb-nchan
-docker run --name nchan -d -p "0.0.0.0:9080:9080" timmaa/nginx-lb-nachan
+docker run --name nchan -d -p "0.0.0.0:9080:9080" timmaa/nginx-lb-nchan
 ```
 
 
