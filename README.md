@@ -7,6 +7,18 @@ In this game, everyone can collaborate to create an awesome image. Everyone else
 The entire project is running at 217.182.197.2. **Come join us!**
 
 
+##Why Cassandra?
+
+The idea behind "The Monday Painters" is a game in which multiple are able to exchange their painting and guessing abilities.
+To achieve this, it is mandatory to set a stable infrastructure due to performance and user experience. This is were _cassandra_ comes into focus.
+Cassandra DB makes it possible to manage enormous sets of data. Through the ability to partitioning and replicate the database, cassandra is makes sure that the information needed is 
+available in just milliseconds even if one or more cassandra nodes denial service through technical defect. 
+
+"The Monday Painters" need data to save the coordinates of the current painted points. Cassandra enables clustering of these points. Because of that, sets of points are 
+stored efficiently. Because Cassandra is made for high availability and performance, advanced data analysis is more complicated. In case of the game, data analysis does not play 
+a big role, which makes Cassandra DB a perfect database.
+
+
 ## Production
 
 ### Local Start of Everything
