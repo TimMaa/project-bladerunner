@@ -1,25 +1,18 @@
 #welcomeScreen{
   height: 50%;
+  min-width: 550px;
   width: 50%;
   background-color: rgba(100,100,100,0.6);
   text-align: center;
+  color: white;
   margin: auto;
   position: absolute;
   top: 0; left: 0; bottom: 0; right: 0;
-  display: table;
   line-height: 3em;
 }
 
-#welcomeContent{
-  display: table-row;
-  text-align: center;
-  color: white;
-}
-
-#welcomeActions{
-  display: table-row;
-}
-
-.startButton{
-  width: 80%;
+.welcomeActions{
+  font-size: 1.5em;
+  color: rgba(100,100,100,1);
+  font-weight: bold;
 }

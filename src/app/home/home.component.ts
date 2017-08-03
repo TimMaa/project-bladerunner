@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {UserManagementService} from 'app/services/user-management.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  providers: [],
 })
 export class HomeComponent implements OnInit {
-
-  soldierAmount: number = 10;
 
   previousBattles: Object[] = [
     {
@@ -42,10 +42,6 @@ export class HomeComponent implements OnInit {
       highscore: 87123,
     },
     {
-      name: 'Axl',
-      highscore: 0,
-    },
-    {
       name: 'Paul',
       highscore: 1960,
     },
@@ -53,15 +49,39 @@ export class HomeComponent implements OnInit {
       name: 'Billie Joe',
       highscore: 2171857883,
     }
-    ];
+  ];
 
-  armyColor: string = '#133769';
-  username: string = 'DerDreiJuniWallach';
-  password: string = '*********';
+  colors: Object[] = [
+    {
+      name: 'Sparkly',
+      price: 9.95
+    },
+    {
+      name: 'Dreamy',
+      price: 12.95
+    },
+    {
+      name: 'Cloudy',
+      price: 7.99
+    },
+  ];
 
-  constructor() { }
+  username: string;
+
+  constructor(public userService: UserManagementService) {
+    this.username = userService.user.name;
+  }
 
   ngOnInit() {
   }
 
+  /**
+   * Logs the user out of the application
+   * Clears the name and resets the type
+   * Thereby the client will be forced to log in again before being able to access game functions
+   */
+  logout() {
+    this.userService.user.name = '';
+    this.userService.user.type = 0;
+  }
 }

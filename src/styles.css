@@ -3,7 +3,7 @@ html, body{
   width: 100%;
   margin: 0px;
   font-family: 'Open Sans', sans-serif;
-  background: url(assets/img/city.jpg);
+  background: url(assets/img/city.jpg) no-repeat center center fixed;
   background-size: cover;
   overflow: hidden;
   user-select: none;

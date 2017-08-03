@@ -1,21 +1,36 @@
-<div id="welcomeScreen">
-  <div id="welcomeContent">
-    <h1>
-      {{title}}
-    </h1>
-    <p *ngIf="!username">
-      Here you can login!
-    </p>
-    <p *ngIf="username">
-      Welcome {{username}}!
-    </p>
+<div id="welcomeScreen" fxLayout="column" fxLayoutAlign="space-around stretch">
+  <h1>
+    Getting Started
+  </h1>
+  <label>
+    Name:
+    <input [(ngModel)]="userService.user.name">
+  </label>
+  <div>
     <label>
-      Name:
-      <input [(ngModel)]="username" (keydown)="enableButton()">
+      Choose your role for the Games to come
     </label>
+    <div class="welcomeActions">
+      <button md-button style="height: 100%" [style.background-color]="getPColor()"
+              (click)="userService.user.type = 1">
+        <div fxLayout="column" fxLayoutAlign="space-around stretch">
+          <span>Painter</span>
+          <i class="material-icons">brush</i>
+        </div>
+      </button>
+      <button md-button style="height: 100%" [style.background-color]="getGColor()"
+              (click)="userService.user.type = 2">
+        <div fxLayout="column" fxLayoutAlign="space-around stretch">
+          <span>Guesser</span>
+          <i class="material-icons">question_answer</i>
+        </div>
+      </button>
+    </div>
   </div>
-
-  <div id="welcomeActions">
-    <button md-button id="startButton" routerLink="/home" [disabled]="isDisabled">START THE GAME !</button>
-  </div>
+  <button md-button class="welcomeActions" style="width: 80%" [disabled]="enableButton()" routerLink="/game"
+          fxFlexAlign="center">
+    START THE GAME !
+  </button>
 </div>
+
+<app-footer></app-footer>
